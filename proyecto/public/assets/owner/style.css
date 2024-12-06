@@ -1,0 +1,38 @@
+.navbar-pastelblue {
+    background-color: #3ABAF6;
+    color: #ffffff;
+}
+
+.btn-grey {
+    background-color: #7b92ad;
+    border: none;
+    color: #ffffff;
+    padding: 5px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+} 
+
+body {
+    background-color: #f4f4f4;
+}
+
+#logo {
+    width: 90px;
+}
+
+#home_icon {
+    width: 45px;
+}
+
+.contenedor{
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    width: 50%; 
+    margin: 0 auto;
+    height: auto;
+    
+}
+

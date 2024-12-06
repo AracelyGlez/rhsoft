@@ -1,0 +1,15 @@
+form#datos_usuario input:invalid{
+    border-color:red ;
+}
+
+.bg-gray{
+    background-color: var(--bs-gray-400);
+}
+
+form#datos_usuario input:valid{
+    border-color:green ;
+}
+
+form#datos_usuario label::first-letter{
+    color: green;
+}
