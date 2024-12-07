@@ -36,15 +36,9 @@ class Nomina
         $this->db->bind(':nss_nomina', $data['nss_nomina']);
         $this->db->bind(':horas_nomina', $data['horas_nomina']);
         $this->db->bind(':pago_nominas', $data['pago_nominas']);
-        echo '<pre>';
-print_r($data);
-echo '</pre>';
-die();
-        # ejecucion
-        if (empty($data['rfc']) || empty($data['nombre_nomina']) || empty($data['departamento_nomina']) || 
-    empty($data['nss_nomina']) || empty($data['horas_nomina']) || empty($data['pago_nominas'])) {
-    return false; 
-}
+//         echo '<pre>';
+// print_r($data);
+// echo '</pre>';
         try {
             // return $this->db->execute();
             $this->db->execute();

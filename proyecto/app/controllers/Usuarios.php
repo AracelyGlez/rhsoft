@@ -1,33 +1,58 @@
 <?php
 class Usuarios extends Controller
 {
-    // private $usuariosModel;
+    private $nominasModel;
 
-    // public function __construct()
-    // {
-    //     // construct para usar la conexion a base de datos y creacion de modelo
-    //     $this->usuariosModel = $this->model('Usuario');
-    // }
-    
-    // // inicializar un modelo
-    // private $usuariosModel;
+    public function __construct()
+    {
+        // construct para usar la conexion a base de datos y creacion de modelo
+        $this->nominasModel = $this->model('Nomina');
+    }
 
-    // public function __construct()
-    // {
-    //     // construct para usar la conexion a base de datos y creacion de modelo
-    //     $this->usuariosModel = $this->model('Usuario');
-    // }
     public function index() {
         $this->view('usuarios/nominas');
+    }
+
+    public function agregar()
+    {
+        // parte de inicializacion de campos 
+        $data = [
+            'button' => 'Enviar',
+            'rfc' => '',
+            'nombre_nomina' => '',
+            'departamento_nomina' => '',
+            'nss_nomina' => '',
+            'horas_nomina' => '',
+            'pago_nominas' => ''
+        ];
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $data = [
+                'rfc' => $_POST['rfc'],
+                'nombre_nomina' => $_POST['nombre_nomina'],
+                'departamento_nomina' => $_POST['departamento_nomina'],
+                'nss_nomina' => $_POST['nss_nomina'],
+                'horas_nomina' => $_POST['horas_nomina'],
+                'pago_nominas' => $_POST['pagos_nomina'],
+            ];
+            //  //para tracking
+            //                    echo '<pre>';
+            //                    print_r($data);
+
+            //                    echo '</pre>';
+            //                    die();
+            //            // fin de tracking
+            # validacion del lado del servidor // todas las posibles
+            if (empty($data['rfc']) || empty($data['nombre_nomina']) || empty($data['departamento_nomina']) || 
+    empty($data['nss_nomina']) || empty($data['horas_nomina']) || empty($data['pago_nominas'])) {
+                $data['msg_error'] = 'Algunos campos están vacíos';
+            }
+        }
+        $this->view('usuarios/nominas', $data);
     }
 
     
     public function vacaciones() {
         $this->view('usuarios/vacaciones');
-    }
-
-    public function nominas() {
-        $this->view('usuarios/nominas');
     }
 
     public function incapacidades() {
