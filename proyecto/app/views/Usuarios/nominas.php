@@ -8,6 +8,7 @@ include APPROOT .'/views/includes/encabezado.inc.php';
 ?>
  <!-- Título del formulario -->
  <div class="p-3 mb-3 text-center">
+ <h3><?= ucfirst((isset($data['button']) && $data['button'] == 'Enviar') ? 'agregar ' : 'editar '); ?></h3>
             <h2 class="mb-0">Generaci&oacute;n de N&oacute;minas</h2>
         </div>
 
