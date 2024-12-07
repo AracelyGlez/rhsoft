@@ -26,7 +26,7 @@
       <div class="container-fluid">
         <!-- logotipo -->
         <img
-          src="/images/RHSoft_logo.png"
+          src="/proyecto/app/images/RHSoft_logo.png"
           id="logo"
           alt="RHSoft logo"
           width="90"
@@ -34,7 +34,7 @@
         />
         <!-- icono de home -->
         <img
-          src="/images/home_icon.png"
+          src="/proyecto/app/images/home_icon.png"
           id="home_icon"
           alt="home icon"
           width="45"
@@ -53,9 +53,27 @@
           <li class="nav-item">
             <a class="nav-link " href="<?= URLROOT; ?>/usuarios/incapacidades">Incapacidades</a>
           </li>
-        </ul>
-        
+          </ul>
+          <ul class="navbar-nav d-flex my-2 my-lg-0">
+          <?php if(estaLogueado()) { ?>
+            <?php } else { }?>
+          <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <img
+          src="/proyecto/app/images/login.png"
+          id="login_icon"
+          alt="login icon"
+          width="45"
+          style="margin-right: 20px"
+        />
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="<?= URLROOT; ?>/usuarios/login">Login</a></li>
+            <li><a class="dropdown-item" href="<?= URLROOT; ?>/usuarios/registrar">Registro</a></li>
+            </ul>
+        </li>
 
+        </ul>
        
         </div>
       </div>
