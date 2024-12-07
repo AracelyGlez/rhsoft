@@ -1,6 +1,7 @@
 <?php
 // Conexión a la base de datos
 require_once 'config.inc.php';
+include APPROOT .'/views/includes/encabezado.inc.php';
 
 // Establece la conexión con la base de datos
 $conexion = new mysqli(DBHOST, DBUSER, DBPWD, DBNAME);

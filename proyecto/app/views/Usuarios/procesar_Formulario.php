@@ -1,48 +1,54 @@
 <?php
-// Conexión a la base de datos
-require_once 'config.inc.php'; // Incluye tu archivo de configuración para la conexión a la BD
+// Configuración de la base de datos
+require_once 'config.inc.php';
 
-// Verifica si los datos fueron enviados por POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Captura y valida los datos del formulario
-    $nombre = $_POST['nombre_vacaciones'];
-    $rfc = $_POST['rfc_vacaciones'];
-    $departamento = $_POST['departamento_vacaciones'];
-    $dias = intval($_POST['dias_vacaciones']);
-    $salida = $_POST['salidad_vacaciones'];
-    $entrada = $_POST['entrada_vacaciones'];
-    $pago = floatval($_POST['pago_vacaciones']);
+    // Obtener los datos del formulario
+    $nombre = $_POST['nombre_usuario'] ?? '';
+    $rfc = $_POST['rfc_usuario'] ?? '';
+    $departamento = $_POST['departamento'] ?? '';
+    $dias_disponibles = $_POST['dias_disponibles'] ?? 0;
+    $fecha_salida = $_POST['fecha_salida'] ?? '';
+    $fecha_entrada = $_POST['fecha_entrada'] ?? '';
+    $pago_por_dia = $_POST['pago_por_dia'] ?? 0.0;
 
-    // Establece la conexión con la base de datos
-    $conexion = new mysqli(DBHOST, DBUSER, DBPWD, DBNAME);
-
-    // Verifica la conexión
-    if ($conexion->connect_error) {
-        die("Error de conexión: " . $conexion->connect_error);
+    // Validaciones básicas (puedes agregar más según sea necesario)
+    if (
+        empty($nombre) || empty($rfc) || empty($departamento) || 
+        empty($dias_disponibles) || empty($fecha_salida) || 
+        empty($fecha_entrada) || empty($pago_por_dia)
+    ) {
+        die("Por favor completa todos los campos del formulario.");
     }
 
-    // Inserta los datos en la tabla 'vacaciones'
-    $sql = "INSERT INTO vacaciones (nombre_vacaciones, rfc_vacaciones, departamento_vacaciones, dias_vacaciones, salidad_vacaciones, entrada_vacaciones, pago_vacaciones) 
-            VALUES (?, ?, ?, ?, ?, ?, ?)";
+    // Insertar los datos en la base de datos
+    try {
+        $pdo = new PDO(DBMOTOR . ":host=" . DBHOST . ";dbname=" . DBNAME, DBUSER, DBPWD);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    $stmt = $conexion->prepare($sql);
-    $stmt->bind_param("sssissd", $nombre, $rfc, $departamento, $dias, $salida, $entrada, $pago);
+        $sql = "INSERT INTO vacaciones (nombre_vacaciones, rfc_vacaciones, departamento_vacaciones, 
+                dias_vacaciones, salidad_vacaciones, entrada_vacaciones, pago_vacaciones) 
+                VALUES (:nombre, :rfc, :departamento, :dias_disponibles, :fecha_salida, :fecha_entrada, :pago_por_dia)";
+        $stmt = $pdo->prepare($sql);
 
-    // Ejecuta la consulta y verifica el resultado
-    if ($stmt->execute()) {
-        // Redirige a la página de registros si la inserción fue exitosa
+        $stmt->execute([
+            ':nombre' => $nombre,
+            ':rfc' => $rfc,
+            ':departamento' => $departamento,
+            ':dias_disponibles' => $dias_disponibles,
+            ':fecha_salida' => $fecha_salida,
+            ':fecha_entrada' => $fecha_entrada,
+            ':pago_por_dia' => $pago_por_dia,
+        ]);
+
+        // Redirigir a mostrar_registros.php después de procesar los datos
         header("Location: mostrar_registros.php");
-        exit();
-    } else {
-        echo "Error al insertar los datos: " . $stmt->error;
-    }
+        exit;
 
-    // Cierra la conexión
-    $stmt->close();
-    $conexion->close();
-} else {
-    // Si se intenta acceder al archivo directamente sin enviar datos, redirige al formulario
-    header("Location: vacaciones.php");
-    exit();
+    } catch (PDOException $e) {
+        die("Error al insertar los datos: " . $e->getMessage());
+    }
 }
-?>
+// Redirigir a mostrar_registros.php después de procesar los datos
+header("Location: mostrar_registros.php");
+exit;

@@ -1,6 +1,14 @@
 <?php
 include APPROOT .'/views/includes/encabezado.inc.php';
 ?>
+<form
+  action="procesar_formulario.php"
+  method="post"
+  id="datos_usuario"
+  class="needs-validation"
+  novalidate
+>
+
 
   
         <!-- Título del formulario -->
