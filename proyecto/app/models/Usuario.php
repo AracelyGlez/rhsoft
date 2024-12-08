@@ -13,6 +13,105 @@ class Usuario
     }
   # preparacion
 
+  public function listarTotalNominas()
+  {
+       $this->db->query("SELECT    id, 
+                              rfc, 
+                              nombre_nomina, 
+                              departamento_nomina, 
+                              nss_nomina,
+                              horas_nomina,
+                              pago_nominas 
+                   FROM nominas");
+
+  $usuarios = $this->db->multiple();
+
+  return $usuarios;
+  }
+  public function listarNominas($pagina, $limite)
+{
+
+  $this->db->query('SELECT * FROM nominas');
+  $this->db->multiple();
+  $numero_registros = $this->db->conteoReg();
+  // enviar query, prepare
+  $this->db->query("SELECT    id, 
+                              rfc, 
+                              nombre_nomina, 
+                              departamento_nomina, 
+                              nss_nomina,
+                              horas_nomina,
+                              pago_nominas 
+                   FROM nominas LIMIT :offset , :limite");
+
+  $this->db->bind(':offset', ((($pagina) ? ($pagina - 1) : 0) * $limite));
+  $this->db->bind(':limite', $limite, PDO::PARAM_INT);
+  // muchos o uno?                            
+  $usuarios['usuarios'] = $this->db->multiple();
+  $paginacion = [
+      'limite' => $limite,
+      'pagina' => $pagina,
+      'paginas' => (ceil($numero_registros / $limite)),
+      'numero_registros' => $numero_registros,
+      'pag_previa' => ($pagina - 1),
+      'pag_siguiente' => ($pagina + 1),
+  ];
+  $usuarios = array_merge($paginacion, $usuarios);
+  // para tracking /  debug
+
+  // echo '<pre>';
+  // print_r($usuarios);
+  // echo '</pre>';
+  // die();
+ // fin de tracking / debug
+  return $usuarios;
+} 
+
+ public function agregarNomina($data)
+ {
+         # preparacion
+     $this->db->query('INSERT INTO nominas (rfc, nombre_nomina, departamento_nomina, nss_nomina, horas_nomina, pago_nominas) VALUES (:rfc, :nombre_nomina, :departamento_nomina, :nss_nomina, :horas_nomina, :pago_nominas)');
+     # vinculacion
+     $this->db->bind(':rfc', $data['rfc']);
+     $this->db->bind(':nombre_nomina', $data['nombre_nomina']);
+     $this->db->bind(':departamento_nomina', $data['departamento_nomina']);
+     $this->db->bind(':nss_nomina', $data['nss_nomina']);
+     $this->db->bind(':horas_nomina', $data['horas_nomina']);
+     $this->db->bind(':pago_nominas', $data['pago_nominas']);
+//         echo '<pre>';
+// print_r($data);
+// echo '</pre>';
+     try {
+         // return $this->db->execute();
+         $this->db->execute();
+         return true;
+     } catch (Exception $evt) {
+         // echo $evt->getMessage();
+         // die();
+         return false;
+     }
+ }
+
+  public function eliminar($id)
+ {
+     # preparacion
+     $this->db->query('DELETE FROM nominas WHERE id = :id');
+
+     #vinculacion
+     $this->db->bind(':id', $id);
+
+     #ejecucion
+     try {
+
+         $this->db->execute();
+         return true;
+     } catch (Exception $evt) {
+         // echo $evt->getMessage();
+         // die();
+         return false;
+     }
+ }
+
   public function agregarUsuario($data)
   {
       # preparacion

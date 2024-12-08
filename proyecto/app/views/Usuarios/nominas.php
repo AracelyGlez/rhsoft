@@ -14,7 +14,7 @@ include APPROOT .'/views/includes/encabezado.inc.php';
 
         <!-- Comienza formulario -->
         <form
-          action="<?= URLROOT; ?>/usuarios/agregarnomina"
+          action="<?= URLROOT; ?>/usuarios/agregarnominas"
           method="post"
           id="datos_nomina"
            enctype="multipart/form-data"

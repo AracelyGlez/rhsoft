@@ -45,7 +45,7 @@
         <ul class="navbar-nav me-auto mb-2 mb-md-0">
          
           <li class="nav-item">
-            <a class="nav-link " href="<?= URLROOT; ?>/usuarios/nominas">Nóminas</a>
+            <a class="nav-link " href="<?= URLROOT; ?>/usuarios/agregarNominas">Nóminas</a>
           </li>
           <li class="nav-item">
             <a class="nav-link " href="<?= URLROOT; ?>/usuarios/vacaciones">Vacaciones</a>

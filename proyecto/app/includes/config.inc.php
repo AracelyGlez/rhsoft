@@ -5,11 +5,11 @@
 # constantes para conexion a base de datos
 define('DBMOTOR', 'mysql');
 define('DBHOST','localhost');
-define('DBNAME', 'rhsoft');
+define('DBNAME', 'rh');
 define('DBUSER','root');
 define('DBPWD','');
 # ambiente publico (url)
-define('URLROOT', 'http://pw20243');
+define('URLROOT', 'http://rhsoft');
 // echo URLROOT;
 // echo '<br>';
 # ambiente privado (rutas relativas)

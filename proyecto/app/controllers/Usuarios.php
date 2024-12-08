@@ -8,8 +8,8 @@ class Usuarios extends Controller
         // construct para usar la conexion a base de datos y creacion de modelo
         $this->usuariosModel = $this->model('Usuario');
     }
-
-    public function agregarNomina() {
+ 
+    public function agregarNominas() {
         $data = [
             'button' => 'Guardar',
             'rfc' => '',
@@ -39,13 +39,6 @@ class Usuarios extends Controller
                 'pago_nominas' => $_POST['pago_nominas'],
                 
             ];
-
-            if ($this->db->execute()) {
-                return true;
-            } else {
-                error_log("Error al insertar en nominas: " . $this->db->errorInfo());
-                return false;
-            }
             //  //para tracking
             //                    echo '<pre>';
             //                    print_r($data);
@@ -63,15 +56,24 @@ class Usuarios extends Controller
             }
         
             # guardar
-            if ($this->usuariosModel->agregarNominas($data)) {
-            redirigir('/usuarios/index/1/10'); // Helper que utiliza header("Location:")
-            } else {
-             $data['msg_error'] = 'Oops, algo salió mal al guardar los datos.';
+            if (empty($data['msg_error'])) {
+                if ($this->usuariosModel->agregarNomina($data)) {
+                    // Redirigir a la lista de nóminas si todo salió bien
+                   header("Location: /usuarios/nominas"); // Ajusta según tu lógica de paginación
+                    exit; // Detener ejecución después de la redirección
+                } else {
+                    $data['msg_error'] = "Hubo un error al guardar la nómina. Intenta nuevamente.";
+                }
             }
         } 
-        $this->view('usuarios/nominas');
+        $this->view('usuarios/nominas',$data);
     }
-
+     public function index($pagina = 1, $limite = 10){
+        $usuarios = $this->usuariosModel->listarNominas($pagina, $limite);
+        $this->view('usuarios/tabla_nominas',$usuarios);  
+    
+         $this->view('usuarios/nominas');
+      }
     public function eliminar($id)
     {
         if (!$this->usuariosModel->eliminar($id)) {
@@ -84,13 +86,12 @@ class Usuarios extends Controller
              * header('Location:/controlador) <== correcto
              */
 
-            header('Location:/usuarios/tabla_nominas/1/10');
+            redirigir('/usuarios/tabla_nominas/1/10');
         }
     }
 
-    public function tablaNomina($pagina = 1, $limite = 10){
-        $usuarios = $this->usuariosModel->listarNominas($pagina, $limite);
-        $this->view('usuarios/tabla_nominas',$usuarios);  
+    public function tablaNomina(){
+        
     
          }
 
