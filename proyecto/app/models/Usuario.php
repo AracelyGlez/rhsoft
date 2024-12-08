@@ -13,6 +13,26 @@ class Usuario
     }
   # preparacion
 
+  public function agregarUsuario($data)
+  {
+      # preparacion
+      $this->db->query('INSERT INTO usuarios (nombre_usuario, correo_usuario, password_usuario) VALUES (:nombre_usuario, :correo_usuario, :password_usuario)');
+      # vinculacion
+      $this->db->bind(':nombre_usuario', $data['nombre_usuario']);
+      $this->db->bind(':correo_usuario', $data['correo_usuario']);
+      $this->db->bind(':password_usuario', $data['password_usuario']);
+      # ejecucion
+      try {
+          // return $this->db->execute();
+          $this->db->execute();
+          return true;
+      } catch (Exception $evt) {
+          // echo $evt->getMessage();
+          // die();
+          return false;
+      }
+  }
+
     public function loginUsuario($data) {
         // echo '<pre>';
         // print_r($data);
@@ -31,6 +51,39 @@ class Usuario
             }
         }
         return false;
+        }
+
+        public function editarUsuario($data) {
+            # preparacion
+             //para tracking
+                //    echo '<pre>';
+                //    print_r($data);
+                //    echo '</pre>';
+                //    die();
+                $cadena ='';
+             $cadena = $data['cambiar_password']?',password_usuario=:password_usuario':''; 
+            $this->db->query("UPDATE usuarios SET nombre_usuario=:nombre_usuario, 
+                                                  correo_usuario=:correo_usuario {$cadena}
+          
+                            WHERE id = :id");
+    //                   echo $cadena;
+    // die();     
+            # vinculacion
+            $this->db->bind(':id', $data['id']);
+            $this->db->bind(':nombre_usuario', $data['nombre_usuario']);
+            $this->db->bind(':correo_usuario', $data['correo_usuario']);
+            if($data['cambiar_password'])
+                $this->db->bind(':password_usuario', $data['password_usuario']);
+            # ejecucion
+            try {
+                // return $this->db->execute();
+                $this->db->execute();
+                return true;
+            } catch (Exception $evt) {
+                // echo $evt->getMessage();
+                // die();
+                return false;
+            }
         }
 
 
