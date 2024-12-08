@@ -137,7 +137,7 @@ class Usuario
         // print_r($data);
         // echo '</pre>'; 
         // die();
-        $this->db->query("SELECT nombre_usuario, correo_usuario, contrasena_usuario FROM usuarios
+        $this->db->query("SELECT nombre_usuario, correo_usuario, password_usuario FROM usuarios
         WHERE correo_usuario =:correo_usuario");
         $this->db->bind(':correo_usuario', $data['correo_usuario']);
         $usuario=$this->db->unico();
@@ -145,7 +145,7 @@ class Usuario
         if($this->db->conteoReg()) {
             //Cumple el primer filtro, ahora acciones para revisar password
             $passHash = $usuario->password_usuario;
-            if(password_verify($data['contrasena_usuario'], $passHash)) {
+            if(password_verify($data['password_usuario'], $passHash)) {
                 return $usuario;
             }
         }
