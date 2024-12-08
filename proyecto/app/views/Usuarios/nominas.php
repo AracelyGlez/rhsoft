@@ -14,7 +14,7 @@ include APPROOT .'/views/includes/encabezado.inc.php';
 
         <!-- Comienza formulario -->
         <form
-          action="<?= URLROOT; ?>/cliente/agregar"
+          action="<?= URLROOT; ?>/usuarios/agregarnomina"
           method="post"
           id="datos_nomina"
            enctype="multipart/form-data"
@@ -116,7 +116,7 @@ include APPROOT .'/views/includes/encabezado.inc.php';
     
 
 
-        <!-- <script>
+         <script>
       (() => {
       'use strict'
     
@@ -135,7 +135,7 @@ include APPROOT .'/views/includes/encabezado.inc.php';
         }, false)
       })
     })()
-    </script> -->
+    </script> 
     
         <?php
 include APPROOT .'/views/includes/pie.inc.php';

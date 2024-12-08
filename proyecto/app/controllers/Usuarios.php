@@ -9,48 +9,91 @@ class Usuarios extends Controller
         $this->usuariosModel = $this->model('Usuario');
     }
 
-    public function index() {
+    public function agregarNomina() {
+        $data = [
+            'button' => 'Guardar',
+            'rfc' => '',
+            'nombre_nomina' => '',
+            'departamento_nomina' => '',
+            'nss_nomina' => '',
+            'horas_nomina' => '',
+            'pago_nominas' => '',
+            'msg_error' => ''
+        ];
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        //     //para tracking
+        //         echo '<pre>';
+        //         print_r($_POST);
+        //         echo '<br>';
+        //         print_r($_FILES);
+        //         echo '</pre>';
+        //        die();
+        //    // fin de tracking
+           
+            $data = [
+                'rfc' => $_POST['rfc'],
+                'nombre_nomina' => $_POST['nombre_nomina'],
+                'departamento_nomina' => $_POST['departamento_nomina'],
+                'nss_nomina' => $_POST['nss_nomina'],
+                'horas_nomina' => $_POST['horas_nomina'],
+                'pago_nominas' => $_POST['pago_nominas'],
+                
+            ];
+
+            if ($this->db->execute()) {
+                return true;
+            } else {
+                error_log("Error al insertar en nominas: " . $this->db->errorInfo());
+                return false;
+            }
+            //  //para tracking
+            //                    echo '<pre>';
+            //                    print_r($data);
+
+            //                    echo '</pre>';
+            //                    die();
+            //            // fin de tracking
+            # validacion del lado del servidor // todas las posibles
+            if (!preg_match('/^[A-ZÑ&]{3,4}[0-9]{6}[A-Z0-9]{3}$/', $data['rfc'])) {
+                $data['msg_error'] = 'El RFC no tiene un formato válido.';
+            } elseif (!is_numeric($data['horas_nomina']) || $data['horas_nomina'] <= 0) {
+                $data['msg_error'] = 'Las horas trabajadas deben ser un número positivo.';
+            } elseif (!is_numeric($data['pago_nominas']) || $data['pago_nominas'] <= 0) {
+                $data['msg_error'] = 'El pago debe ser un número positivo.';
+            }
+        
+            # guardar
+            if ($this->usuariosModel->agregarNominas($data)) {
+            redirigir('/usuarios/index/1/10'); // Helper que utiliza header("Location:")
+            } else {
+             $data['msg_error'] = 'Oops, algo salió mal al guardar los datos.';
+            }
+        } 
         $this->view('usuarios/nominas');
     }
 
-    // public function agregar()
-    // {
-    //     // parte de inicializacion de campos 
-    //     $data = [
-    //         'button' => 'Enviar',
-    //         'rfc' => '',
-    //         'nombre_nomina' => '',
-    //         'departamento_nomina' => '',
-    //         'nss_nomina' => '',
-    //         'horas_nomina' => '',
-    //         'pago_nominas' => ''
-    //     ];
-    //     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    //         $data = [
-    //             'rfc' => $_POST['rfc'],
-    //             'nombre_nomina' => $_POST['nombre_nomina'],
-    //             'departamento_nomina' => $_POST['departamento_nomina'],
-    //             'nss_nomina' => $_POST['nss_nomina'],
-    //             'horas_nomina' => $_POST['horas_nomina'],
-    //             'pago_nominas' => $_POST['pagos_nomina'],
-    //         ];
-    //         //  //para tracking
-    //         //                    echo '<pre>';
-    //         //                    print_r($data);
+    public function eliminar($id)
+    {
+        if (!$this->usuariosModel->eliminar($id)) {
+            echo 'No se pudo dar de baja';
+            // esto es solo de prueba, hay que hacerlo mas elaborado
+        } else {
+            /**
+             * esta es una vista llamada internamente y necesito una llamada exterma (de la url)
+             * $this->view('usuarios/index/1/10'); <== incorrecto
+             * header('Location:/controlador) <== correcto
+             */
 
-    //         //                    echo '</pre>';
-    //         //                    die();
-    //         //            // fin de tracking
-    //         # validacion del lado del servidor // todas las posibles
-    //         if (empty($data['rfc']) || empty($data['nombre_nomina']) || empty($data['departamento_nomina']) || 
-    // empty($data['nss_nomina']) || empty($data['horas_nomina']) || empty($data['pago_nominas'])) {
-    //             $data['msg_error'] = 'Algunos campos están vacíos';
-    //         }
-    //     }
-    //     $this->view('usuarios/nominas', $data);
-    // }
+            header('Location:/usuarios/tabla_nominas/1/10');
+        }
+    }
 
+    public function tablaNomina($pagina = 1, $limite = 10){
+        $usuarios = $this->usuariosModel->listarNominas($pagina, $limite);
+        $this->view('usuarios/tabla_nominas',$usuarios);  
     
+         }
+
     public function vacaciones() {
         $this->view('usuarios/vacaciones');
     }
