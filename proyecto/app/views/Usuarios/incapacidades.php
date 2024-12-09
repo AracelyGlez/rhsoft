@@ -3,9 +3,15 @@
         <?= htmlspecialchars($data['msg_error']); ?>
     </div>
 <?php endif; ?>
+
 <?php
 include APPROOT .'/views/includes/encabezado.inc.php';
 ?>
+
+<?php if (estaLogueado()) {
+
+?>
+
  <!-- Título del formulario -->
  <div class="p-3 mb-3 text-center">
 
@@ -146,5 +152,9 @@ include APPROOT .'/views/includes/encabezado.inc.php';
 include APPROOT .'/views/includes/pie.inc.php';
 ?>
     
-
+    <?php }
+else { ?>
+<h1>Inicia sesión primero</h1>
+<?php }
+?>
 
