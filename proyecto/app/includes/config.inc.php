@@ -33,6 +33,6 @@ spl_autoload_register(function($nombreClase){
  include APPROOT . '/vendors/dompdf/autoload.inc.php';
 
 // # cargar helpers de inicio cargar $session
- include APPROOT . '/helpers/helpers.php';
+include APPROOT . '/helpers/helpers.php';
 
 // include APPROOT . '/vendors/nusoap-master/src/nusoap.php';
