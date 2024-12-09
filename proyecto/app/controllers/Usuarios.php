@@ -9,6 +9,66 @@ class Usuarios extends Controller
         $this->usuariosModel = $this->model('Usuario');
     }
  
+    public function agregarIncapacidades() {
+        $data = [
+            'button' => 'Guardar',
+            'rfc' => '',
+            'nombre_usuario' => '',
+            'departamento_usuario' => '',
+            'dias_incapacidad' => '',
+            'tipo_incapacidad' => '',
+            'pago_general' => '',
+            'msg_error' => ''
+        ];
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        //     //para tracking
+        //         echo '<pre>';
+        //         print_r($_POST);
+        //         echo '<br>';
+        //         print_r($_FILES);
+        //         echo '</pre>';
+        //        die();
+        //    // fin de tracking
+           
+            $data = [
+                'rfc' => $_POST['rfc'],
+                'nombre_usuario' => $_POST['nombre_usuario'],
+                'departamento_usuario' => $_POST['departamento_usuario'],
+                'dias_incapacidad' => $_POST['dias_incapacidad'],
+                'tipo_incapacidad' => $_POST['tipo_incapacidad'],
+                'pago_general' => $_POST['pago_general'],
+                
+            ];
+            //  //para tracking
+            //                    echo '<pre>';
+            //                    print_r($data);
+
+            //                    echo '</pre>';
+            //                    die();
+            //            // fin de tracking
+            # validacion del lado del servidor // todas las posibles
+            if (!preg_match('/^[A-ZÑ&]{3,4}[0-9]{6}[A-Z0-9]{3}$/', $data['rfc'])) {
+                $data['msg_error'] = 'El RFC no tiene un formato válido.';
+            } elseif (!is_numeric($data['horas_nomina']) || $data['horas_nomina'] <= 0) {
+                $data['msg_error'] = 'Los dias de incapacidad deben ser un número positivo.';
+            } elseif (!is_numeric($data['pago_nominas']) || $data['pago_nominas'] <= 0) {
+                $data['msg_error'] = 'El pago debe ser un número positivo.';
+            }
+        
+            # guardar
+            if (empty($data['msg_error'])) {
+                if ($this->usuariosModel->agregarIncapacidad($data)) {
+                    // Redirigir a la lista de nóminas si todo salió bien 
+                   header("Location: /usuarios/agregarIncapacidades"); // Ajusta según tu lógica de paginación
+                    exit; // Detener ejecución después de la redirección
+                } else {
+                    $data['msg_error'] = "Hubo un error al guardar la nómina. Intenta nuevamente.";
+                }
+            }
+        } 
+        $this->view('usuarios/incapacidades',$data);
+    }
+
     public function agregarNominas() {
         $data = [
             'button' => 'Guardar',
@@ -69,6 +129,51 @@ class Usuarios extends Controller
         $this->view('usuarios/nominas',$data);
     }
 
+
+    public function editarIncapacidades($id){
+        $data = [
+            'button' => 'Actualizar',
+            'msg_error' => ''
+        ];
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $data = [
+                'id' => $_POST['id'], // ojo aqui // <========= nuevo
+                'rfc' => $_POST['rfc'],
+                'nombre_usuario' => $_POST['nombre_usuario'],
+                'departamento_usuario' => $_POST['departamento_usuario'],
+                'dias_incapacidad' => $_POST['dias_incapacidad'],
+                'tipo_incapacidad' => $_POST['tipo_incapacidad'],
+                'pago_general' => $_POST['pago_general'],   
+            ];
+            if (empty($data['rfc']) || empty($data['nombre_usuarios']) || empty($data['departamento_usuarios']) || empty($data['dias_incapacidad']) || empty($data['tipo_incapacidad']) || empty($data['pago_general'])) {
+                $data['msg_error'] = 'Algunos campos estan vacios';
+            }
+            if ($this->usuariosModel->editarNomina($data)) {
+                // El nombre sugerido sería actualizar usuario
+                // $this->view('usuarios/index/1/10');
+                  header('Location:/usuarios/tablaIncapacidad/1/10');
+                 exit();
+            } else {
+                $data['msg_error'] = 'Opps , algo salio mal';
+            }
+        } 
+        
+        $usuario = $this->usuariosModel->buscarIncapacidad($id);
+        $data = [
+            'button' => 'Actualizar',
+            'id' => $usuario->id, 
+            'rfc' => $usuario->rfc,
+            'nombre_nomina' => $usuario->nombre_nomina,
+            'departamento_nomina' => $usuario->departamento_nomina,
+            'nss_nomina' => $usuario->nss_nomina,
+            'horas_nomina' => $usuario->horas_nomina,
+            'pago_nominas' => $usuario->pago_nominas,
+        ];
+
+        $this->view('usuarios/editarNominas', $data);
+        // echo 'fue get';
+        }
     
     public function editarNominas($id){
         $data = [
@@ -129,6 +234,22 @@ class Usuarios extends Controller
              */
 
             redirigir('/usuarios/tablaNomina/1/10');
+        }
+    }
+
+    public function eliminarIncapacidad($id)
+    {
+        if (!$this->usuariosModel->eliminar($id)) {
+            echo 'No se pudo dar de baja';
+            // esto es solo de prueba, hay que hacerlo mas elaborado
+        } else {
+            /**
+             * esta es una vista llamada internamente y necesito una llamada exterma (de la url)
+             * $this->view('usuarios/index/1/10'); <== incorrecto
+             * header('Location:/controlador) <== correcto
+             */
+
+            redirigir('/usuarios/tablaIncapacidad/1/10');
         }
     }
 
@@ -270,6 +391,12 @@ class Usuarios extends Controller
         
     }
 
+    public function tablaIncapacidad($pagina = 1, $limite = 10){
+        $usuarios = $this->usuariosModel->listarIncapacidad($pagina, $limite);
+        $this->view('usuarios/tabla_incapacidades',$usuarios);
+        
+    }
+
     public function tablaVacacion($pagina = 1, $limite = 10){
         $usuarios = $this->usuariosModel->listarVacacion($pagina, $limite);
         $this->view('usuarios/tabla_vacaciones',$usuarios);
@@ -281,12 +408,6 @@ class Usuarios extends Controller
         
           
       }
-
-    #INCAPACIDADES
-
-    public function agregarIncapacidades() {
-        $this->view('usuarios/incapacidades');
-    }
 
     public function registrar() {
         $data = [
