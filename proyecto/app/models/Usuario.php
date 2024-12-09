@@ -13,6 +13,128 @@ class Usuario
     }
   # preparacion
 
+# Metodos Incapacidades
+
+public function listarIncapacidades($pagina, $limite)
+{
+
+  $this->db->query('SELECT * FROM incapacidades');
+  $this->db->multiple();
+  $numero_registros = $this->db->conteoReg();
+  // enviar query, prepare
+  $this->db->query("SELECT    id, 
+                              rfc, 
+                              nombre_usuario, 
+                              departamento_usuario, 
+                              dias_incapacidad,
+                              tipo_incapacidad,
+                              pago_general 
+                   FROM incapacidades LIMIT :offset , :limite");
+
+  $this->db->bind(':offset', ((($pagina) ? ($pagina - 1) : 0) * $limite));
+  $this->db->bind(':limite', $limite, PDO::PARAM_INT);
+  // muchos o uno?                            
+  $usuarios['usuarios'] = $this->db->multiple();
+  $paginacion = [
+      'limite' => $limite,
+      'pagina' => $pagina,
+      'paginas' => (ceil($numero_registros / $limite)),
+      'numero_registros' => $numero_registros,
+      'pag_previa' => ($pagina - 1),
+      'pag_siguiente' => ($pagina + 1),
+  ];
+  $usuarios = array_merge($paginacion, $usuarios);
+  // para tracking /  debug
+
+  // echo '<pre>';
+  // print_r($usuarios);
+  // echo '</pre>';
+  // die();
+ // fin de tracking / debug
+  return $usuarios;
+} 
+
+public function agregarIncapacidad($data)
+ {
+         # preparacion
+     $this->db->query('INSERT INTO incapacidades (rfc, nombre_usuario, departamento_usuario, dias_incapacidad, tipo_incapacidad, pago_general) VALUES (:rfc, :nombre_usuario, :departamento_usuario, :dias_incapacidad, :tipo_incapacidad, :pago_general)');
+     # vinculacion
+     $this->db->bind(':rfc', $data['rfc']);
+     $this->db->bind(':nombre_usuario', $data['nombre_usuario']);
+     $this->db->bind(':departamento_usuario', $data['departamento_usuario']);
+     $this->db->bind(':dias_incapacidad', $data['dias_incapacidad']);
+     $this->db->bind(':tipo_incapacidad', $data['tipo_incapacidad']);
+     $this->db->bind(':pago_general', $data['pago_general']);
+//         echo '<pre>';
+// print_r($data);
+// echo '</pre>';
+     try {
+         // return $this->db->execute();
+         $this->db->execute();
+         return true;
+     } catch (Exception $evt) {
+         // echo $evt->getMessage();
+         // die();
+         return false;
+     }
+ }
+
+ public function eliminarIncapacidad($id)
+ {
+     # preparacion
+     $this->db->query('DELETE FROM incapacidades WHERE id = :id');
+
+     #vinculacion
+     $this->db->bind(':id', $id);
+
+     #ejecucion
+     try {
+
+         $this->db->execute();
+         return true;
+     } catch (Exception $evt) {
+         // echo $evt->getMessage();
+         // die();
+         return false;
+     }
+ }
+
+ public function editarIncapacidad($data) {
+    # preparacion
+     //para tracking
+        //    echo '<pre>';
+        //    print_r($data);
+        //    echo '</pre>';
+        //    die();
+        $cadena ='';
+     $cadena = $data['cambiar_password']?',password_usuario=:password_usuario':''; 
+    $this->db->query("UPDATE usuarios SET nombre_usuario=:nombre_usuario, 
+                                          correo_usuario=:correo_usuario {$cadena}
+  
+                    WHERE id = :id");
+// echo $cadena;
+// die();     
+    # vinculacion
+    $this->db->bind(':id', $data['id']);
+    $this->db->bind(':nombre_usuario', $data['nombre_usuario']);
+    $this->db->bind(':correo_usuario', $data['correo_usuario']);
+    if($data['cambiar_password'])
+        $this->db->bind(':password_usuario', $data['password_usuario']);
+    # ejecucion
+    try {
+        // return $this->db->execute();
+        $this->db->execute();
+        return true;
+    } catch (Exception $evt) {
+        // echo $evt->getMessage();
+        // die();
+        return false;
+    }
+}
+
+
+
+
   public function listarTotalNominas()
   {
        $this->db->query("SELECT    id, 

@@ -1,165 +1,74 @@
-
 <?php
-include APPROOT .'/views/includes/encabezado.inc.php';
+
+/**
+ * llamadas a includes, antes decia llegue
+ */
+include APPROOT . '/views/includes/encabezado.inc.php';
 ?>
-        
-        <!-- Título del formulario -->
-        <div class="p-3 mb-3 text-center">
-          <h2 class="mb-0">Solicitud de Tiempo de Incapacidad</h2>
-        </div>
-
-        <form
-          action="#"
-          method="get"
-          id="datos_usuario"
-          class="needs-validation"
-          novalidate
-        >
-          <div class="row mb-3">
-            <div class="col">
-              <label for="nombre_usuario" class="form-label">Nombre</label>
-              <input
-                type="text"
-                class="form-control"
-                name="nombre_usuario"
-                id="nombre_usuario"
-                placeholder="Nombre"
-                required
-              />
-            </div>
-            <div class="col">
-              <label for="rfc_usuario" class="form-label">RFC</label>
-              <input
-                type="text"
-                class="form-control"
-                name="rfc_usuario"
-                id="rfc_usuario"
-                placeholder="RFC"
-                required
-              />
-            </div>
-          </div>
-
-          <div class="row mb-3">
-            <div class="col">
-              <label for="departamento" class="form-label">Departamento</label>
-              <select
-                class="form-select"
-                name="departamento"
-                id="departamento"
-                required
-              >
-                <option value="" disabled selected>
-                  Seleccione un departamento
-                </option>
-                <option value="recursos_humanos">Recursos Humanos</option>
-                <option value="finanzas">Finanzas</option>
-                <option value="ti">Tecnologías de la Información</option>
-              </select>
-            </div>
-            <div class="col">
-              <label for="dias_disponibles" class="form-label"
-                >Días de Incapacidad</label
-              >
-              <input
-                type="number"
-                class="form-control"
-                name="dias_disponibles"
-                id="dias_disponibles"
-                placeholder="Días"
-                required
-              />
-            </div>
-          </div>
-
-          <div class="row mb-3">
-            <div class="col">
-              <label for="departamento" class="form-label">Tipo de Incapacidad</label>
-              <select
-                class="form-select"
-                name="departamento"
-                id="departamento"
-                required
-              >
-                <option value="" disabled selected>
-                  Seleccione el tipo de incapacidad
-                </option>
-                <option value="recursos_humanos">Lesi&oacute;n</option>
-                <option value="finanzas">Enfermedad o Infecci&oacute;n</option>
-                <option value="ti">Tiempo de Reposo</option>
-              </select>
-            </div>
-            <div class="col text-center">
-              <label for="pago_por_dia" class="form-label">Pago general</label>
-              <input
-                type="number"
-                class="form-control"
-                name="pago_por_dia"
-                id="pago_por_dia"
-                placeholder="Monto"
-                required
-              />
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col text-center">
-              <button type="submit" class="btn btn-primary">Enviar</button>
-            </div>
-          </div>
-        </form>
-      </div>
-    </main>
-
-    <br><br>
-
-    <div class="p-3 mb-3 text-center">
-      <h2 class="mb-0">Registro de tiempos de incapacidad</h2>
-    </div>
-    <div class="container mt-3">
-    <div class="table-responsive">
-      <table class="table table-bordered table-hover table-striped">
+<!-- seccion cuerpo -->
+<br><br>
+<div class="row">
+    <div class="col-8">&nbsp;</div>
+    <!-- <div class="col-2"><a href="<?= URLROOT; ?>/usuarios/imprimir/fpdf" class="btn btn-warning btn-sm" title="Imprimir FPDF"><i class="fa fa-file-pdf"></i></a></div> -->
+    <div class="col-1"><a href="<?= URLROOT; ?>/usuarios/agregar" class="btn btn-success btn-sm" title="Agregar"><i class="fa fa-user"></i></a></div>
+</div>
+<div
+    class="table-responsive mt-3">
+    <table
+        class="table table-primary table-striped table-hover">
         <thead>
-          <tr>
-            <th scope="col">Columna 1</th>
-            <th scope="col">Columna 2</th>
-            <th scope="col">Columna 3</th>
-          </tr>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">R.F.C</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Departamento</th>
+                <th scope="col">D&iacute;as</th>
+                <th scope="col">Tipo</th>
+                <th scope="col">Pago</th>
+            </tr>
         </thead>
         <tbody>
-          <tr class="">
-            <td scope="row">1</td>
-            <td>2</td>
-            <td>3</td>
-          </tr>
-          <tr class="">
-            <td scope="row">4</td>
-            <td>5</td>
-            <td>6</td>
-          </tr>
+            <?php foreach ($data['usuarios'] as $usuario): ?>
+                <tr>
+                    <td><?= $usuario->id; ?></td>
+                    <td><?= $usuario->rfc; ?></td>
+                    <td><?= $usuario->nombre_usuario; ?></td>
+                    <td><?= $usuario->departamento_usuario; ?></td>
+                    <td><?= $usuario->dias_incapacidad; ?></td>
+                    <td><?= $usuario->tipo_incapacidad; ?></td>
+                    <td><?= $usuario->pago_general; ?></td>
+                    <td><a href="<?= URLROOT; ?>/usuarios/editar/<?= $usuario->id; ?>" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i></a>
+                        <a href="<?= URLROOT; ?>/usuarios/eliminar/<?= $usuario->id; ?>" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
         </tbody>
-      </table>
-    </div>
-  </div>
-  <script>
-    (() => {
-    'use strict'
-  
-    // Fetch all the forms we want to apply custom Bootstrap validation styles to
-    const forms = document.querySelectorAll('.needs-validation')
-  
-    // Loop over them and prevent submission
-    Array.from(forms).forEach(form => {
-      form.addEventListener('submit', event => {
-        if (!form.checkValidity()) {
-          event.preventDefault()
-          event.stopPropagation()
-        }
-  
-        form.classList.add('was-validated')
-      }, false)
-    })
-  })()
-  </script>
+    </table>
+    <!-- seccion de navegacion para paginacion -->
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center   ">
+            <!-- anterior -->
+            <li class="page-item <?= ($data['pagina'] <= 1) ?  'disabled' : ''; ?> ">
+                <a class="page-link" href="<?= ($data['pagina'] <= 1) ? '#' : URLROOT . '/usuarios/index/' . $data['pag_previa'] . '/' . $data['limite']; ?>" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <!-- fin anterior -->
+            <!-- paginas -->
+            <?php for ($i = 1; $i <= $data['paginas']; $i++) { ?>
+                <li class="page-item <?= ($data['pagina'] == $i) ?  'active' : ''; ?>" aria-current="page"><a class="page-link" href="<?= URLROOT . '/usuarios/index/' . $i . '/' . $data['limite']; ?>"><?= $i; ?></a></li>
+            <?php } ?>
+            <!-- fin paginas -->
+            <!-- siguiente -->
+            <li class="page-item <?= ($data['pagina'] >= $data['paginas']) ?  'disabled' : ''; ?>">
+                <a class="page-link" href="<?= ($data['pagina'] >= $data['paginas']) ? '#' : URLROOT . '/usuarios/index/' . $data['pag_siguiente'] . '/' . $data['limite']; ?>" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+            <!-- fin siguiente -->
+        </ul>
+    </nav>
+</div>
 
-<?php include APPROOT .'/views/includes/pie.inc.php'; ?>
+<!-- fin de seccion cuerpo -->
+<?php include APPROOT . '/views/includes/pie.inc.php'; ?>
