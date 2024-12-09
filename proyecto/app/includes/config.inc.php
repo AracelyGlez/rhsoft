@@ -27,12 +27,12 @@ spl_autoload_register(function($nombreClase){
 // include_once APPROOT . '/libraries/Controller.php';
 
 # cargar FPDF
-// include APPROOT . '/vendors/fpdf/fpdf.php';
+ include APPROOT . '/vendors/fpdf/fpdf.php';
 
 // # cargar DOMPDF
-// include APPROOT . '/vendors/dompdf/autoload.inc.php';
+ include APPROOT . '/vendors/dompdf/autoload.inc.php';
 
 // # cargar helpers de inicio cargar $session
-// include APPROOT . '/helpers/helpers.php';
+ include APPROOT . '/helpers/helpers.php';
 
 // include APPROOT . '/vendors/nusoap-master/src/nusoap.php';

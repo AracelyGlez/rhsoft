@@ -28,7 +28,7 @@ class Usuario
 
   return $usuarios;
   }
-  public function listarNominas($pagina, $limite)
+  public function listarNomina($pagina, $limite)
 {
 
   $this->db->query('SELECT * FROM nominas');
@@ -92,7 +92,60 @@ class Usuario
      }
  }
 
-  public function eliminar($id)
+ public function buscarNomina($id)
+    {
+        # consulta
+        $this->db->query("SELECT    id, 
+                              rfc, 
+                              nombre_nomina, 
+                              departamento_nomina, 
+                              nss_nomina,
+                              horas_nomina,
+                              pago_nominas 
+                        FROM nominas 
+                        WHERE id =:id");
+
+        $this->db->bind(':id', $id);
+
+        try {
+            return  $this->db->unico();
+        } catch (Exception $evt) {
+            return false;
+        }
+    } // fin de buscarNomina
+
+ /**
+     * metodo agregar usuario
+     * @param arreglo
+     * @return valor (false, true)
+     */
+ public function editarNomina($data){
+    $this->db->query("UPDATE nominas SET rfc=:rfc, 
+                                              nombre_nomina=:nombre_nomina, 
+                                              departamento_nomina=:departamento_nomina,
+                                              nss_nomina=:nss_nomina,
+                                              horas_nomina=:horas_nomina,
+                                              pago_nominas=:pago_nominas
+                        WHERE id = :id");
+    $this->db->bind(':id', $data['id']);
+    $this->db->bind(':rfc', $data['rfc']);
+    $this->db->bind(':nombre_nomina', $data['nombre_nomina']);
+    $this->db->bind(':departamento_nomina', $data['departamento_nomina']);
+    $this->db->bind(':nss_nomina', $data['nss_nomina']);
+    $this->db->bind(':horas_nomina', $data['horas_nomina']);
+    $this->db->bind(':pago_nominas', $data['pago_nominas']);
+    try {
+        // return $this->db->execute();
+        $this->db->execute();
+        return true;
+    } catch (Exception $evt) {
+        // echo $evt->getMessage();
+        // die();
+        return false;
+    }
+ }
+
+  public function eliminarNomina($id)
  {
      # preparacion
      $this->db->query('DELETE FROM nominas WHERE id = :id');
@@ -112,6 +165,162 @@ class Usuario
      }
  }
 
+
+ # VACACIONES
+ public function listarTotalVacaciones()
+ {
+      $this->db->query("SELECT    id, 
+                             nombre_vacaciones, 
+                             rfc_vacaciones, 
+                             departamento_vacaciones, 
+                             dias_vacaciones,
+                             salidad_vacaciones,
+                             entrada_vacaciones,
+                             pago_vacaciones 
+                  FROM vacaciones");
+
+ $usuarios = $this->db->multiple();
+
+ return $usuarios;
+ }
+ public function listarVacacion($pagina, $limite)
+{
+
+ $this->db->query('SELECT * FROM vacaciones');
+ $this->db->multiple();
+ $numero_registros = $this->db->conteoReg();
+ // enviar query, prepare
+ $this->db->query("SELECT    id, 
+                             nombre_vacaciones,
+                             rfc_vacaciones,  
+                             departamento_vacaciones, 
+                             dias_vacaciones,
+                             salidad_vacaciones,
+                             entrada_vacaciones,
+                             pago_vacaciones  
+                  FROM vacaciones LIMIT :offset , :limite");
+
+ $this->db->bind(':offset', ((($pagina) ? ($pagina - 1) : 0) * $limite));
+ $this->db->bind(':limite', $limite, PDO::PARAM_INT);
+ // muchos o uno?                            
+ $usuarios['usuarios'] = $this->db->multiple();
+ $paginacion = [
+     'limite' => $limite,
+     'pagina' => $pagina,
+     'paginas' => (ceil($numero_registros / $limite)),
+     'numero_registros' => $numero_registros,
+     'pag_previa' => ($pagina - 1),
+     'pag_siguiente' => ($pagina + 1),
+ ];
+ $usuarios = array_merge($paginacion, $usuarios);
+ return $usuarios;
+} 
+
+public function agregarVacacion($data)
+{
+        # preparacion
+    $this->db->query('INSERT INTO vacaciones (nombre_vacaciones, rfc_vacaciones, departamento_vacaciones, dias_vacaciones, salidad_vacaciones, entrada_vacaciones, pago_vacaciones) VALUES (:nombre_vacaciones, :rfc_vacaciones, :departamento_vacaciones, :dias_vacaciones, :salidad_vacaciones, :entrada_vacaciones, :pago_vacaciones)');
+    # vinculacion
+    $this->db->bind(':nombre_vacaciones', $data['nombre_vacaciones']);
+    $this->db->bind(':rfc_vacaciones', $data['rfc_vacaciones']);
+    $this->db->bind(':departamento_vacaciones', $data['departamento_vacaciones']);
+    $this->db->bind(':dias_vacaciones', $data['dias_vacaciones']);
+    $this->db->bind(':salidad_vacaciones', $data['salidad_vacaciones']);
+    $this->db->bind(':entrada_vacaciones', $data['entrada_vacaciones']);
+    $this->db->bind(':pago_vacaciones', $data['pago_vacaciones']);
+//         echo '<pre>';
+// print_r($data);
+// echo '</pre>';
+    try {
+        // return $this->db->execute();
+        $this->db->execute();
+        return true;
+    } catch (Exception $evt) {
+        // echo $evt->getMessage();
+        // die();
+        return false;
+    }
+}
+
+public function buscarVacacion($id)
+{
+    # consulta
+    $this->db->query("SELECT   id, 
+                             nombre_vacaciones,
+                             rfc_vacaciones,  
+                             departamento_vacaciones, 
+                             dias_vacaciones,
+                             salidad_vacaciones,
+                             entrada_vacaciones,
+                             pago_vacaciones 
+                    FROM vacaciones 
+                    WHERE id =:id");
+
+    $this->db->bind(':id', $id);
+
+    try {
+        return  $this->db->unico();
+    } catch (Exception $evt) {
+        return false;
+    }
+} // fin de buscarNomina
+
+/**
+ * metodo agregar usuario
+ * @param arreglo
+ * @return valor (false, true)
+ */
+public function editarVacacion($data){
+$this->db->query("UPDATE vacaciones SET nombre_vacaciones=:nombre_vacaciones,
+                                          rfc_vacaciones=:rfc_vacaciones,
+                                          departamento_vacaciones=:departamento_vacaciones,
+                                        dias_vacaciones=:dias_vacaciones,
+                                          salidad_vacaciones=:salidad_vacaciones,
+                                          entrada_vacaciones=:entrada_vacaciones,
+                                          pago_vacaciones=:pago_vacaciones
+                    WHERE id = :id");
+
+$this->db->bind(':id', $data['id']);
+$this->db->bind(':nombre_vacaciones', $data['nombre_vacaciones']);
+$this->db->bind(':rfc_vacaciones', $data['rfc_vacaciones']);
+$this->db->bind(':departamento_vacaciones', $data['departamento_vacaciones']);
+$this->db->bind(':dias_vacaciones', $data['dias_vacaciones']);
+$this->db->bind(':salidad_vacaciones', $data['salidad_vacaciones']);
+$this->db->bind(':entrada_vacaciones', $data['entrada_vacaciones']);
+$this->db->bind(':pago_vacaciones', $data['pago_vacaciones']);
+try {
+    // return $this->db->execute();
+    $this->db->execute();
+    return true;
+} catch (Exception $evt) {
+    // echo $evt->getMessage();
+    // die();
+    return false;
+}
+}
+
+public function eliminarVacaciones($id)
+ {
+     # preparacion
+     $this->db->query('DELETE FROM vacaciones WHERE id = :id');
+
+     #vinculacion
+     $this->db->bind(':id', $id);
+
+     #ejecucion
+     try {
+
+         $this->db->execute();
+         return true;
+     } catch (Exception $evt) {
+         // echo $evt->getMessage();
+         // die();
+         return false;
+     }
+ }
+
+
+# LOGIN
   public function agregarUsuario($data)
   {
       # preparacion

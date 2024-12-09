@@ -48,10 +48,13 @@
             <a class="nav-link " href="<?= URLROOT; ?>/usuarios/agregarNominas">Nóminas</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link " href="<?= URLROOT; ?>/usuarios/vacaciones">Vacaciones</a>
+            <a class="nav-link " href="<?= URLROOT; ?>/usuarios/agregarVacaciones">Vacaciones</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link " href="<?= URLROOT; ?>/usuarios/incapacidades">Incapacidades</a>
+            <a class="nav-link " href="<?= URLROOT; ?>/usuarios/agregarIncapacidades">Incapacidades</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " href="<?= URLROOT; ?>/usuarios/index">Archivos</a>
           </li>
           </ul>
           <ul class="navbar-nav d-flex my-2 my-lg-0">
