@@ -58,8 +58,8 @@ class Usuarios extends Controller
             # guardar
             if (empty($data['msg_error'])) {
                 if ($this->usuariosModel->agregarNomina($data)) {
-                    // Redirigir a la lista de nóminas si todo salió bien
-                   header("Location: /usuarios/nominas"); // Ajusta según tu lógica de paginación
+                    // Redirigir a la lista de nóminas si todo salió bien 
+                   header("Location: /usuarios/agregarNominas"); // Ajusta según tu lógica de paginación
                     exit; // Detener ejecución después de la redirección
                 } else {
                     $data['msg_error'] = "Hubo un error al guardar la nómina. Intenta nuevamente.";
@@ -68,13 +68,55 @@ class Usuarios extends Controller
         } 
         $this->view('usuarios/nominas',$data);
     }
-     public function index($pagina = 1, $limite = 10){
-        $usuarios = $this->usuariosModel->listarNominas($pagina, $limite);
-        $this->view('usuarios/tabla_nominas',$usuarios);  
+
     
-         $this->view('usuarios/nominas');
-      }
-    public function eliminar($id)
+    public function editarNominas($id){
+        $data = [
+            'button' => 'Actualizar',
+            'msg_error' => ''
+        ];
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $data = [
+                'id' => $_POST['id'], // ojo aqui // <========= nuevo
+                'rfc' => $_POST['rfc'],
+                'nombre_nomina' => $_POST['nombre_nomina'],
+                'departamento_nomina' => $_POST['departamento_nomina'],
+                'nss_nomina' => $_POST['nss_nomina'],
+                'horas_nomina' => $_POST['horas_nomina'],
+                'pago_nominas' => $_POST['pago_nominas'],   
+            ];
+            if (empty($data['rfc']) || empty($data['nombre_nomina']) || empty($data['departamento_nomina']) || empty($data['nss_nomina']) || empty($data['horas_nomina']) || empty($data['pago_nominas'])) {
+                $data['msg_error'] = 'Algunos campos estan vacios';
+            }
+            if ($this->usuariosModel->editarNomina($data)) {
+                // El nombre sugerido sería actualizar usuario
+                // $this->view('usuarios/index/1/10');
+                  header('Location:/usuarios/tablaNomina/1/10');
+                 exit();
+            } else {
+                $data['msg_error'] = 'Opps , algo salio mal';
+            }
+        } 
+        
+        $usuario = $this->usuariosModel->buscarNomina($id);
+        $data = [
+            'button' => 'Actualizar',
+            'id' => $usuario->id, 
+            'rfc' => $usuario->rfc,
+            'nombre_nomina' => $usuario->nombre_nomina,
+            'departamento_nomina' => $usuario->departamento_nomina,
+            'nss_nomina' => $usuario->nss_nomina,
+            'horas_nomina' => $usuario->horas_nomina,
+            'pago_nominas' => $usuario->pago_nominas,
+        ];
+
+        $this->view('usuarios/editarNominas', $data);
+        // echo 'fue get';
+        } 
+
+    
+    public function eliminarNomina($id)
     {
         if (!$this->usuariosModel->eliminar($id)) {
             echo 'No se pudo dar de baja';
@@ -86,20 +128,163 @@ class Usuarios extends Controller
              * header('Location:/controlador) <== correcto
              */
 
-            redirigir('/usuarios/tabla_nominas/1/10');
+            redirigir('/usuarios/tablaNomina/1/10');
         }
     }
 
-    public function tablaNomina(){
-        
-    
-         }
+     public function imprimir($formato)
+   {
 
-    public function vacaciones() {
-        $this->view('usuarios/vacaciones');
+       $usuarios = $this->usuariosModel->listarTotalNominas();
+        
+       
+           $this->view('usuarios/imprimir_fpdf', $usuarios);
+        
+        
+   }
+
+   
+#VACACIONES
+    public function agregarVacaciones() {
+        $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+        $data = [
+            'button' => 'Guardar',
+            'nombre_vacaciones' => '',
+            'rfc_vacaciones' => '',
+            'departamento_vacaciones' => '',
+            'dias_vacaciones' => '',
+            'salidad_vacaciones' => '',
+            'entrada_vacaciones' => '',
+            'pago_vacaciones' => '',
+            'msg_error' => ''
+        ];
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $data = [
+                'nombre_vacaciones' => $_POST['nombre_vacaciones'],
+                'rfc_vacaciones' => $_POST['rfc_vacaciones'],
+                'departamento_vacaciones' => $_POST['departamento_vacaciones'],
+                'dias_vacaciones' => $_POST['dias_vacaciones'],
+                'salidad_vacaciones' => $_POST['salidad_vacaciones'],
+                'entrada_vacaciones' => $_POST['entrada_vacaciones'],
+                'pago_vacaciones' => $_POST['pago_vacaciones'],  
+            ];
+            # validacion del lado del servidor // todas las posibles
+            if (!preg_match('/^[A-ZÑ&]{3,4}[0-9]{6}[A-Z0-9]{3}$/', $data['rfc_vacaciones'])) {
+                $data['msg_error'] = 'El RFC no tiene un formato válido.';
+            } elseif (!is_numeric($data['pago_vacaciones']) || $data['pago_vacaciones'] <= 0) {
+                $data['msg_error'] = 'El pago debe ser un número positivo.';
+            } elseif ($data['dias_vacaciones'] <= 0) {
+                $data['msg_error'] = 'El número de días debe ser mayor a 0.';
+            } elseif (!strtotime($data['salidad_vacaciones']) || !strtotime($data['entrada_vacaciones'])) {
+                $data['msg_error'] = 'Las fechas de salida y entrada deben tener un formato válido.';
+            } elseif (strtotime($data['salidad_vacaciones']) > strtotime($data['entrada_vacaciones'])) {
+                $data['msg_error'] = 'La fecha de salida no puede ser posterior a la fecha de entrada.';
+            }
+        
+            # guardar
+            if (empty($data['msg_error'])) {
+                if ($this->usuariosModel->agregarVacacion($data)) {
+                    // Redirigir a la lista de nóminas si todo salió bien
+                   header("Location: /usuarios/agregarVacaciones"); // Ajusta según tu lógica de paginación
+                    exit; // Detener ejecución después de la redirección
+                } else {
+                    $data['msg_error'] = "Hubo un error al guardar las vacaciones. Intenta nuevamente.";
+                }
+            }
+        }
+        $this->view('usuarios/vacaciones',$data);
     }
 
-    public function incapacidades() {
+    public function editarVacaciones($id){
+        $data = [
+            'button' => 'Actualizar',
+            'msg_error' => ''
+        ];
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $data = [
+                'id' => $_POST['id'], // ojo aqui // <========= nuevo
+                'rfc_vacaciones' => $_POST['rfc_vacaciones'],
+                'nombre_vacaciones' => $_POST['nombre_vacaciones'],
+                'departamento_vacaciones' => $_POST['departamento_vacaciones'],
+                'dias_vacaciones' => $_POST['dias_vacaciones'],
+                'salidad_vacaciones' => $_POST['salidad_vacaciones'],
+                'entrada_vacaciones' => $_POST['entrada_vacaciones'],
+                'pago_vacaciones' => $_POST['pago_vacaciones'],   
+            ];
+            if (empty($data['rfc_vacaciones']) || empty($data['nombre_vacaciones']) || empty($data['departamento_vacaciones']) || empty($data['dias_vacaciones']) || empty($data['salidad_vacaciones']) || empty($data['entrada_vacaciones']) || empty($data['pago_vacaciones'])) {
+                $data['msg_error'] = 'Algunos campos estan vacios';
+            }
+            if ($this->usuariosModel->editarVacacion($data)) {
+                // El nombre sugerido sería actualizar usuario
+                // $this->view('usuarios/index/1/10');
+                  header('Location:/usuarios/tablaVacacion/1/10');
+                 exit();
+            } else {
+                $data['msg_error'] = 'Opps , algo salio mal';
+            }
+        } 
+        
+        $usuario = $this->usuariosModel->buscarVacacion($id);
+        $data = [
+            'button' => 'Actualizar',
+            'id' => $usuario->id, 
+            'rfc_vacaciones' => $usuario->rfc_vacaciones,
+            'nombre_vacaciones' => $usuario->nombre_vacaciones,
+            'departamento_vacaciones' => $usuario->departamento_vacaciones,
+            'dias_vacaciones' => $usuario->dias_vacaciones,
+            'salidad_vacaciones' => $usuario->salidad_vacaciones,
+            'entrada_vacaciones' => $usuario->entrada_vacaciones,
+            'pago_vacaciones' => $usuario->pago_vacaciones,
+        ];
+
+        $this->view('usuarios/editarVacaciones', $data);
+        // echo 'fue get';
+        } 
+    public function eliminarVacacion($id)
+    {
+        if (!$this->usuariosModel->eliminarVacaciones($id)) {
+            echo 'No se pudo dar de baja';
+            // esto es solo de prueba, hay que hacerlo mas elaborado
+        } else {
+
+            redirigir('/usuarios/tablaVacacion/1/10');
+        }
+    }
+
+    public function imprimirVacaciones($formato)
+    {
+ 
+        $usuarios = $this->usuariosModel->listarTotalVacaciones();
+         
+        
+            $this->view('usuarios/imprimir_fpdfVacacion', $usuarios);
+         
+         
+    }
+
+    
+      public function tablaNomina($pagina = 1, $limite = 10){
+        $usuarios = $this->usuariosModel->listarNomina($pagina, $limite);
+        $this->view('usuarios/tabla_nominas',$usuarios);
+        
+    }
+
+    public function tablaVacacion($pagina = 1, $limite = 10){
+        $usuarios = $this->usuariosModel->listarVacacion($pagina, $limite);
+        $this->view('usuarios/tabla_vacaciones',$usuarios);
+       
+    }
+ public function index(){
+     $this->view('usuarios/archivos'); 
+    
+        
+          
+      }
+
+    #INCAPACIDADES
+
+    public function agregarIncapacidades() {
         $this->view('usuarios/incapacidades');
     }
 
@@ -169,16 +354,16 @@ class Usuarios extends Controller
         // session_start(); No es el lugar adecuado, en config o en este caso en helpers---> apoyo
         $data = [
             'correo_usuario' => '',
-            'contrasena_usuario' => '',
+            'password_usuario' => '',
             'msg_error' => ''
         ];
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $data = [
                 'correo_usuario' => $_POST['correo_usuario'],
-                'contrasena_usuario' => $_POST['contrasena_usuario']
+                'password_usuario' => $_POST['password_usuario']
             ];
              # validacion del lado del servidor // todas las posibles
-            if (empty($data['contrasena_usuario']) || empty($data['correo_usuario'] )) {
+            if (empty($data['password_usuario']) || empty($data['correo_usuario'] )) {
                 $data['msg_error'] = 'Algunos campos estan vacios';
             }
             # validacion especial (correo, password)

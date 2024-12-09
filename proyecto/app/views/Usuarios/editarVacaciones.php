@@ -1,23 +1,32 @@
+
 <?php
 include APPROOT .'/views/includes/encabezado.inc.php';
 ?>
-
-
-
-  
+<?php  if (!empty($data['msg_error'])): ?>
+    <div class="alert alert-danger">
+        <?= htmlspecialchars($data['msg_error']); ?>
+    </div>
+<?php endif; ?>
         <!-- Título del formulario -->
         <div class="p-3 mb-3 text-center">
-            <h2 class="mb-0">Nominas en Tiempo Vacacional</h2>
+        
+       
+            <h2 class="mb-0">Editar Vacaciones</h2>
         </div>
 
         <form
-          action="<?= URLROOT; ?>/usuarios/agregarVacaciones"
+          action="<?= URLROOT; ?>/usuarios/<?= (isset($data['button']) && $data['button'] == 'Guardar') ? 'agregar' : 'editarVacaciones'; ?>/<?= (isset($data['button']) && $data['button'] == 'Guardar') ? '' : $data['id']; ?>"
           method="post"
           id="datos_vacaciones"
            enctype="multipart/form-data"
           class="needs-validation"
           novalidate
         >
+
+        <?php if (isset($data['id']) && $data['id'] != null) { ?>
+          <input type="hidden" name="id" value="<?= $data['id']; ?>">
+        <?php } ?>
+
           <div class="row mb-3">
             <div class="col" id="grupo-nombre_vacaciones">
               <label for="nombre_vacaciones" class="form-label">Nombre</label>
@@ -27,6 +36,7 @@ include APPROOT .'/views/includes/encabezado.inc.php';
                 name="nombre_vacaciones"
                 id="nombre_vacaciones"
                 placeholder="Nombre"
+                value="<?= $data['nombre_vacaciones']; ?>"
                 required
               />
             </div>
@@ -38,6 +48,7 @@ include APPROOT .'/views/includes/encabezado.inc.php';
                 name="rfc_vacaciones"
                 id="rfc_vacaciones"
                 placeholder="RFC"
+                value="<?= $data['rfc_vacaciones']; ?>"
                 required
               />
             </div>
@@ -50,14 +61,15 @@ include APPROOT .'/views/includes/encabezado.inc.php';
                 class="form-select"
                 name="departamento_vacaciones"
                 id="departamento_vacaciones"
+                value="<?= $data['departamento_vacaciones']; ?>"
                 required
               >
                 <option value="" disabled selected>
                   Seleccione un departamento
                 </option>
-                <option value="recursos_humanos">Recursos Humanos</option>
-                <option value="finanzas">Finanzas</option>
-                <option value="ti">Tecnologías de la Información</option>
+                <option value="Recursos Humanos">Recursos Humanos</option>
+                <option value="Finanzas">Finanzas</option>
+                <option value="TI">Tecnologías de la Información</option>
               </select>
             </div>
             <div class="col" id="grupo-dias_vacaciones">
@@ -69,6 +81,7 @@ include APPROOT .'/views/includes/encabezado.inc.php';
                 class="form-control"
                 name="dias_vacaciones"
                 id="dias_vacaciones"
+                value="<?= $data['dias_vacaciones']; ?>"
                 placeholder="Días"
                 required
               />
@@ -85,6 +98,7 @@ include APPROOT .'/views/includes/encabezado.inc.php';
                 class="form-control"
                 name="salidad_vacaciones"
                 id="salidad_vacaciones"
+                value="<?= $data['salidad_vacaciones']; ?>"
                 required
               />
             </div>
@@ -97,6 +111,7 @@ include APPROOT .'/views/includes/encabezado.inc.php';
                 class="form-control"
                 name="entrada_vacaciones"
                 id="entrada_vacaciones"
+                value="<?= $data['entrada_vacaciones']; ?>"
                 required
               />
             </div>
@@ -110,6 +125,7 @@ include APPROOT .'/views/includes/encabezado.inc.php';
                 class="form-control"
                 name="pago_vacaciones"
                 id="pago_vacaciones"
+                value="<?= $data['pago_vacaciones']; ?>"
                 placeholder="Monto"
                 required
               />
@@ -118,7 +134,7 @@ include APPROOT .'/views/includes/encabezado.inc.php';
 
           <div class="row">
             <div class="col text-center">
-              <button type="submit" class="btn btn-primary">Enviar</button>
+              <button type="submit" class="btn btn-primary"><?= $data['button']; ?></button>
             </div>
           </div>
         </form>
@@ -147,5 +163,3 @@ include APPROOT .'/views/includes/encabezado.inc.php';
         <?php
 include APPROOT .'/views/includes/pie.inc.php';
 ?>
-    
- 

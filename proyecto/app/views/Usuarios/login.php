@@ -1,50 +1,42 @@
 <?php
-include APPROOT .'/views/includes/encabezado.inc.php';
-?>
-<div class="container mt-3 ">
-        
-        <div class="container bg-blue container mt-2 " >
-            <div class="row">
-                <div class="col-4 " ></div>
-                <div class="col-4 ">
-                    <div class="p-2 mb-2 text-center">
-                        <h2 class="" >Login</h2>
-                    </div>
-                    <div class="contenedor">
-                        <img
-                        src="assets/images/login.png"
-                        id="login"
-                        alt="Login"
-                        style="width: 200px; height: auto;"
-                        />
-                    </div>
 
-                    <!-- inicio form -->
-                    <form action="<?= URLROOT; ?>/usuarios/login" method="post" id="acceso_usuario" class="needs-validation" novalidate>
-                        <div class="row mb-1" text="center">
-                            <div class="col">
-                                <label for="nombre_usuario" class="form-label">Usuario</label>
-                                <input type="text" class="form-control" name="acceso_usuario" id="acceso_usuario"
-                                    placeholder="Usuario" required>
-                            </div>
-                        </div>
-                        <div class="row mb-1" text="center">
-                            <div class="col">
-                                <label for="password_usuario" class="form-label">Password</label>
-                                <input type="text" class="form-control" name="password_usuario" id="password_usuario"
-                                    placeholder="Password" required>
-                            </div>
-                        </div>
-                        <div style="height: 20px;"></div>
-                        <div class="row">
-                            <div class="col text-center">
-                                <button type="submit" class="btn btn-primary">Login</button>
-                            </div>
-                        </div>
-                </div>
-            </div>
-            </form>
-    <?php
-include APPROOT .'/views/includes/pie.inc.php';
+include APPROOT . '/views/includes/encabezado.inc.php';
 ?>
-    
+<!-- seccion cuerpo -->
+<div class="container mt-3 ">
+
+  <div class="row bg-gray rounded-2 py-2 ">
+
+    <div class="alert alert-warning 
+          <?= (isset($data['msg_error']) && !empty($data['msg_error'])) ? 'd-block' : 'd-none'; ?>">
+      <?= (isset($data['msg_error']) && !empty($data['msg_error'])) ? $data['msg_error'] : ''; ?>
+    </div>
+    <div class="offset-1 col-10 offset-1">
+
+        <!-- para editar -->
+        <?php if (isset($data['id']) && $data['id'] != null) { ?>
+          <input type="hidden" name="id" value="<?= $data['id']; ?>">
+        <?php } ?>
+
+    <div class="card p-4 shadow" style="width: 300px;">
+        <h3 class="text-center mb-3">Login</h3>
+        <form action="<?= URLROOT; ?>/usuarios/login" method="post">
+            <!-- Correo -->
+            <div class="mb-3">
+                <label for="correo_usuario" class="form-label">Correo</label>
+                <input type="email" class="form-control" id="correo_usuario" name="correo_usuario" placeholder="Ingrese su correo" required>
+            </div>
+            
+            <!-- Contraseña -->
+            <div class="mb-3">
+                <label for="password_usuario" class="form-label">Contraseña</label>
+                <input type="password" class="form-control" id="password_usuario" name="password_usuario" placeholder="Ingrese su contraseña" required>
+            </div>
+            
+            <!-- Botón de ingresar -->
+            <button type="submit" class="btn btn-primary w-100">Ingresar</button>
+        </form>
+    </div>
+
+</body>
+</html>
