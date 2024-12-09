@@ -26,7 +26,7 @@
       <div class="container-fluid">
         <!-- logotipo -->
         <img
-          src="/proyecto/app/images/RHSoft_logo.png"
+          src="<?= URLROOT; ?>/proyecto/app/images/RHSoft_logo.png"
           id="logo"
           alt="RHSoft logo"
           width="90"
@@ -34,7 +34,7 @@
         />
         <!-- icono de home -->
         <img
-          src="/proyecto/app/images/home_icon.png"
+          src="<?= URLROOT; ?>/proyecto/app/images/home_icon.png"
           id="home_icon"
           alt="home icon"
           width="45"
@@ -63,7 +63,7 @@
           <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
           <img
-          src="/proyecto/app/images/login.png"
+          src="<?= URLROOT; ?>/proyecto/app/images/login.png"
           id="login_icon"
           alt="login icon"
           width="45"

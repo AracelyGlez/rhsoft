@@ -4,7 +4,7 @@ include APPROOT . '/views/includes/encabezado.inc.php';
 ?>
 <!-- seccion cuerpo -->
 <div class="container mt-3 ">
-  <h3><?= ucfirst((isset($data['button']) && $data['button'] == 'Guardar') ? 'agregar ' : 'editar '); ?> Usuario</h3>
+
   <div class="row bg-gray rounded-2 py-2 ">
 
     <div class="alert alert-warning 
