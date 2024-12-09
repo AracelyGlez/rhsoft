@@ -386,7 +386,7 @@ class Usuarios extends Controller
 
     
       public function tablaNomina($pagina = 1, $limite = 10){
-        $usuarios = $this->usuariosModel->listarNomina($pagina, $limite);
+        $usuarios = $this->usuariosModel->listarNominas($pagina, $limite);
         $this->view('usuarios/tabla_nominas',$usuarios);
         
     }
