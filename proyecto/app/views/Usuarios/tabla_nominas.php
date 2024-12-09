@@ -2,6 +2,9 @@
 <?php
 include APPROOT .'/views/includes/encabezado.inc.php';
 ?>
+<?php if (estaLogueado()) {
+
+?>
 <div class="row">
 <div class="col-8">&nbsp;</div>
 <div class="col-1"><a href="<?= URLROOT; ?>/usuarios/imprimir/fpdf" class="btn btn-danger btn-sm" title="Imprimir FPDF"><i class="fa fa-file-pdf"></i></a>
@@ -68,7 +71,11 @@ include APPROOT .'/views/includes/encabezado.inc.php';
         </ul>
     </nav>
 </div>
-  
+<?php }
+else { ?>
+<h1>Inicia sesión primero</h1>
+<?php }
+?>
 
 <?php
 include APPROOT .'/views/includes/pie.inc.php';

@@ -26,20 +26,22 @@
       <div class="container-fluid">
         <!-- logotipo -->
         <img
-          src="<?= URLROOT; ?>/proyecto/app/images/RHSoft_logo.png"
+          src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjzi2MWhooAwulmelu8KVWteeSjJ7bMLJSgvpltMTYLcqy4T1svtkMQA8lfyA0CZ_WDP-xDFSwruQYjokQRA86nIrOIAKFuPsSZkS_rVPXwA0WrPLGUUhYnO585Rac1P6gQW7qlmZ4z1gekeuht1DlrCRCi9mPn5OT1_wVpiGfQpL2BPX2C78UscW7cy3g/s156/RHSoft_logo.png"
           id="logo"
           alt="RHSoft logo"
-          width="90"
+          width="50"
           style="margin-right: 20px"
         />
         <!-- icono de home -->
+        <a href="<?= URLROOT; ?>/home">
         <img
-          src="<?= URLROOT; ?>/proyecto/app/images/home_icon.png"
+          src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjFyWJfJRZFfQYlk6W3ztQLOH189t_RqSfykx6Yd8KKb-S1Nlc_BxQfEPfmX-I-sfFUeRCT_p0hl8JS-7-DUwR9kdxlJiHm-LxcNeyYjMmHiUobukyI9NQs1EYbuNOl535vt9upyb1uLLTekWNa_hOgTRfkhvcBESteJJdrMs2QxLZEBaYqGcCN5P9wwZ4/s1600/home_icon.png"
           id="home_icon"
           alt="home icon"
           width="45"
           style="margin-right: 20px"
         />
+        </a>
        
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav me-auto mb-2 mb-md-0">
@@ -63,12 +65,13 @@
           <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
           <img
-          src="<?= URLROOT; ?>/proyecto/app/images/login.png"
+          src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjZ4-hwAnAA_QECUg9q_zdm2Vpd0Qnp6-2ClyJ0KzmS8sAE-KlyNGm5Bx1LwFVEEtZlmW8w8oDg6_tOfglhHsqRh1gmTNCSs3H3LDR-_9k7YKgr0rWE8MQGvIdsONxmUdAayI76TSj-dSD-RWaLBKK1NhSKAK26wsZ4sJum7AG3OfP47psz5pic6x81hAg/s320/login.png"
           id="login_icon"
           alt="login icon"
           width="45"
           style="margin-right: 20px"
         />
+        
           </a>
           <ul class="dropdown-menu">
             <li><a class="dropdown-item" href="<?= URLROOT; ?>/usuarios/login">Login</a></li>

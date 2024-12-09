@@ -2,6 +2,10 @@
 <?php
 include APPROOT .'/views/includes/encabezado.inc.php';
 ?>
+
+<?php if (estaLogueado()) {
+
+?>
 <?php  if (!empty($data['msg_error'])): ?>
     <div class="alert alert-danger">
         <?= htmlspecialchars($data['msg_error']); ?>
@@ -163,3 +167,7 @@ include APPROOT .'/views/includes/encabezado.inc.php';
         <?php
 include APPROOT .'/views/includes/pie.inc.php';
 ?>
+<?php }
+else { ?>
+<h1>Inicia sesión primero</h1>
+<?php } ?>

@@ -1,6 +1,9 @@
 <?php
 include APPROOT .'/views/includes/encabezado.inc.php';
 ?>
+<?php if (estaLogueado()) {
+
+?>
 <a href="<?= URLROOT; ?>/usuarios/tablaNomina" style="
     display: inline-block;
     background-color: #0064a2; 
@@ -33,3 +36,8 @@ include APPROOT .'/views/includes/encabezado.inc.php';
     border-radius: 10px;
     text-align: center;
 ">Incapacidades</a>
+<?php }
+else { ?>
+<h1>Inicia sesión primero</h1>
+<?php }
+?>

@@ -2,7 +2,9 @@
 include APPROOT .'/views/includes/encabezado.inc.php';
 ?>
 
+<?php if (estaLogueado()) {
 
+?>
 
   
         <!-- Título del formulario -->
@@ -147,5 +149,8 @@ include APPROOT .'/views/includes/encabezado.inc.php';
         <?php
 include APPROOT .'/views/includes/pie.inc.php';
 ?>
-    
+<?php }
+else { ?>
+<h1>Inicia sesión primero</h1>
+<?php } ?>    
  
