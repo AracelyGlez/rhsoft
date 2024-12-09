@@ -19,11 +19,11 @@ session_start();
   * Para permisos varios
   */
 
-//   if(!function_exists('estaLogueado')) {
-//     function estaLogueado() {
-//         return (isset($_SESSION['nombre_usuario']) && !empty($_SESSION['nombre_usuario']))? true:false;
-//     }
-//  }
+  if(!function_exists('estaLogueado')) {
+    function estaLogueado() {
+        return (isset($_SESSION['nombre_usuario']) && !empty($_SESSION['nombre_usuario']))? true:false;
+    }
+ }
 /**
  * Function inciiales
  * @param $texto --- nombre propio de preferencia
@@ -66,10 +66,5 @@ if (!function_exists('cerrarSesion')) {
    }
 }
 
-/**
-* Comentario adicional:
-* Puedes agregar más funciones auxiliares según las necesidades del proyecto.
-* Ejemplo: validaciones específicas, formateos, etc.
-*/
 
 ?>

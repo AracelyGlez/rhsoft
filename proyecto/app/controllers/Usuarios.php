@@ -169,16 +169,16 @@ class Usuarios extends Controller
         // session_start(); No es el lugar adecuado, en config o en este caso en helpers---> apoyo
         $data = [
             'correo_usuario' => '',
-            'contrasena_usuario' => '',
+            'password_usuario' => '',
             'msg_error' => ''
         ];
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $data = [
                 'correo_usuario' => $_POST['correo_usuario'],
-                'contrasena_usuario' => $_POST['contrasena_usuario']
+                'password_usuario' => $_POST['password_usuario']
             ];
              # validacion del lado del servidor // todas las posibles
-            if (empty($data['contrasena_usuario']) || empty($data['correo_usuario'] )) {
+            if (empty($data['password_usuario']) || empty($data['correo_usuario'] )) {
                 $data['msg_error'] = 'Algunos campos estan vacios';
             }
             # validacion especial (correo, password)
