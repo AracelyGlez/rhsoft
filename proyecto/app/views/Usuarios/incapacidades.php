@@ -68,9 +68,9 @@ include APPROOT .'/views/includes/encabezado.inc.php';
                 <option value="" disabled selected>
                   Seleccione un departamento
                 </option>
-                <option value="recursos_humanos">Recursos Humanos</option>
-                <option value="finanzas">Finanzas</option>
-                <option value="tI">Tecnologías de la Información</option>
+                <option value="RR.HH">Recursos Humanos</option>
+                <option value="Finanzas">Finanzas</option>
+                <option value="TI">Tecnologías de la Información</option>
               </select>
             </div>
             <div class="col" id="grupo-dias_incapacidad">

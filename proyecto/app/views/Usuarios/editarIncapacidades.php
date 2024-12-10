@@ -59,7 +59,7 @@ include APPROOT .'/views/includes/encabezado.inc.php';
           <!-- Segunda fila -->
           <div class="row mb-3" >
             <div class="col" id="grupo-departamento_usuario">
-              <label for="departamento_nomina" class="form-label">Departamento</label>
+              <label for="departamento_usuario" class="form-label">Departamento</label>
               <select
                 class="form-select"
                 name="departamento_usuario"
@@ -71,13 +71,13 @@ include APPROOT .'/views/includes/encabezado.inc.php';
                 <option value="" disabled selected>
                   Seleccione un departamento
                 </option>
-                <option value="Recursos humanos">Recursos Humanos</option>
+                <option value="RR.HH">Recursos Humanos</option>
                 <option value="Finanzas">Finanzas</option>
                 <option value="TI">Tecnologías de la Información</option>
               </select>
             </div>
             <div class="col" id="grupo-dias_incapacidad">
-              <label for="nss_nomina" class="form-label">Dias</label>
+              <label for="dias_incapacidad" class="form-label">D&iacute;as</label>
               <input
                 type="number"
                 class="form-control"
@@ -94,7 +94,7 @@ include APPROOT .'/views/includes/encabezado.inc.php';
           <!-- Tercera fila -->
           <div class="row mb-3">
           <div class="col" id="grupo-tipo_incapacidad">
-              <label for="departamento_nomina" class="form-label">Tipo de Incapacidad</label>
+              <label for="tipo_incapacidad" class="form-label">Tipo de incapacidad</label>
               <select
                 class="form-select"
                 name="tipo_incapacidad"
@@ -106,14 +106,14 @@ include APPROOT .'/views/includes/encabezado.inc.php';
                 <option value="" disabled selected>
                   Seleccione su incapacidad
                 </option>
-                <option value="lesion">Lesi&oacute;n</option>
-                <option value="enfermedad">Enfermedad o Infecci&oacute;n</option>
-                <option value="reposo">Tiempo de Reposo</option>
+                <option value="Lesi&oacute;">Lesi&oacute;n</option>
+                <option value="Enfermedad/Infecci&oacute;n">Enfermedad o Infecci&oacute;n</option>
+                <option value="Reposo">Tiempo de Reposo</option>
               </select>
             </div>
             </div>
             <div class="col text-center" id="grupo-pago_general">
-              <label for="pago_nominas" class="form-label">Pago </label>
+              <label for="pago_general" class="form-label">Pago </label>
               <input
                 type="number"
                 class="form-control"

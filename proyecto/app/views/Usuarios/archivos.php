@@ -26,7 +26,7 @@ include APPROOT .'/views/includes/encabezado.inc.php';
     text-align: center;
 ">Vacaciones</a>
 
-<a href="<?= URLROOT; ?>/usuarios/tablaIncapacidades" style="
+<a href="<?= URLROOT; ?>/usuarios/tablaIncapacidad" style="
     display: inline-block;
     background-color: #0064a2; 
     color: white;

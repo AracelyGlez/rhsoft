@@ -49,9 +49,9 @@ class Usuarios extends Controller
             # validacion del lado del servidor // todas las posibles
             if (!preg_match('/^[A-ZÑ&]{3,4}[0-9]{6}[A-Z0-9]{3}$/', $data['rfc'])) {
                 $data['msg_error'] = 'El RFC no tiene un formato válido.';
-            } elseif (!is_numeric($data['horas_nomina']) || $data['horas_nomina'] <= 0) {
+            } elseif (!is_numeric($data['dias_incapacidad']) || $data['dias_incapacidad'] <= 0) {
                 $data['msg_error'] = 'Los dias de incapacidad deben ser un número positivo.';
-            } elseif (!is_numeric($data['pago_nominas']) || $data['pago_nominas'] <= 0) {
+            } elseif (!is_numeric($data['pago_general']) || $data['pago_general'] <= 0) {
                 $data['msg_error'] = 'El pago debe ser un número positivo.';
             }
         
@@ -146,7 +146,7 @@ class Usuarios extends Controller
                 'tipo_incapacidad' => $_POST['tipo_incapacidad'],
                 'pago_general' => $_POST['pago_general'],   
             ];
-            if (empty($data['rfc']) || empty($data['nombre_usuarios']) || empty($data['departamento_usuarios']) || empty($data['dias_incapacidad']) || empty($data['tipo_incapacidad']) || empty($data['pago_general'])) {
+            if (empty($data['rfc']) || empty($data['nombre_usuario']) || empty($data['departamento_usuario']) || empty($data['dias_incapacidad']) || empty($data['tipo_incapacidad']) || empty($data['pago_general'])) {
                 $data['msg_error'] = 'Algunos campos estan vacios';
             }
             if ($this->usuariosModel->editarNomina($data)) {
@@ -164,11 +164,11 @@ class Usuarios extends Controller
             'button' => 'Actualizar',
             'id' => $usuario->id, 
             'rfc' => $usuario->rfc,
-            'nombre_nomina' => $usuario->nombre_nomina,
-            'departamento_nomina' => $usuario->departamento_nomina,
-            'nss_nomina' => $usuario->nss_nomina,
-            'horas_nomina' => $usuario->horas_nomina,
-            'pago_nominas' => $usuario->pago_nominas,
+            'nombre_usuario' => $usuario->nombre_usuario,
+            'departamento_usuario' => $usuario->departamento_usuario,
+            'dias_incapacidad' => $usuario->dias_incapacidad,
+            'tipo_incapacidad' => $usuario->tipo_incapacidad,
+            'pago_general' => $usuario->pago_general,
         ];
 
         $this->view('usuarios/editarNominas', $data);
@@ -260,6 +260,17 @@ class Usuarios extends Controller
         
        
            $this->view('usuarios/imprimir_fpdf', $usuarios);
+        
+        
+   }
+
+   public function imprimirIncapacidad($formato)
+   {
+
+       $usuarios = $this->usuariosModel->listarTotalIncapacidades();
+        
+       
+           $this->view('usuarios/imprimir_fpdf_incapacidades', $usuarios);
         
         
    }

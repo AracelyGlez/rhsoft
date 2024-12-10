@@ -17,7 +17,7 @@ class Usuario
 
 public function listarTotalIncapacidades()
   {
-       $this->db->query("SELECT    id, 
+       $this->db->query("SELECT id, 
                               rfc, 
                               nombre_usuario, 
                               departamento_usuario, 
@@ -31,7 +31,7 @@ public function listarTotalIncapacidades()
   return $usuarios;
   }
 
-  public function listarIncapacidades($pagina, $limite)
+  public function listarIncapacidad($pagina, $limite)
   {
   
     $this->db->query('SELECT * FROM incapacidades');
@@ -94,6 +94,75 @@ public function listarTotalIncapacidades()
          return false;
      }
  }
+
+ public function buscarIncapacidad($id)
+{
+    # consulta
+    $this->db->query("SELECT   id, 
+                             rfc,
+                             nombre_usuario,  
+                             departamento_usuario, 
+                             dias_incapacidad,
+                             tipo_incapacidad,
+                             pago_general 
+                    FROM incapacidades 
+                    WHERE id =:id");
+
+    $this->db->bind(':id', $id);
+
+    try {
+        return  $this->db->unico();
+    } catch (Exception $evt) {
+        return false;
+    }
+} // fin de buscarIncapacidad
+
+public function eliminarIncapacidades($id)
+ {
+     # preparacion
+     $this->db->query('DELETE FROM incapacidades WHERE id = :id');
+
+     #vinculacion
+     $this->db->bind(':id', $id);
+
+     #ejecucion
+     try {
+
+         $this->db->execute();
+         return true;
+     } catch (Exception $evt) {
+         // echo $evt->getMessage();
+         // die();
+         return false;
+     }
+ }
+
+ public function editarIncapacidad($data){
+    $this->db->query("UPDATE incapacidades SET rfc=:rfc,
+                                                nombre_usuario=:nombre_usuario,
+                                              departamento_usuario=:departamento_usuario,
+                                            dias_incapacidad=:dias_incapacidad,
+                                              tipo_incapacidad=:tipo_incapacidad,
+                                              pago_general=:pago_general
+                        WHERE id = :id");
+    
+    $this->db->bind(':id', $data['id']);
+    $this->db->bind(':rfc', $data['rfc']);
+    $this->db->bind(':nombre_usuario', $data['nombre_usuario']);
+    $this->db->bind(':departamento_usuario', $data['departamento_usuario']);
+    $this->db->bind(':dias_incapacidad', $data['dias_incapacidad']);
+    $this->db->bind(':tipo_incapacidad', $data['tipo_incapacidad']);
+    $this->db->bind(':pago_general', $data['pago_general']);
+    try {
+        // return $this->db->execute();
+        $this->db->execute();
+        return true;
+    } catch (Exception $evt) {
+        // echo $evt->getMessage();
+        // die();
+        return false;
+    }
+    }
 
 
 
