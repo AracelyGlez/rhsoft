@@ -15,7 +15,7 @@ function Header()
     // Movernos a la derecha
     $this->Cell(90);
     // Título
-    $this->Cell(30,10,'Listado de Nóminas','B',0,'C');
+    $this->Cell(30,10,'Reporte de Nominas','B',0,'C');
     // Salto de línea
     $this->Ln(20);
 }
