@@ -117,7 +117,7 @@ public function listarTotalIncapacidades()
     }
 } // fin de buscarIncapacidad
 
-public function eliminarIncapacidades($id)
+public function eliminarIncapacidad($id)
  {
      # preparacion
      $this->db->query('DELETE FROM incapacidades WHERE id = :id');

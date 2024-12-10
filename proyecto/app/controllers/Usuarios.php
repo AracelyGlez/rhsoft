@@ -149,7 +149,7 @@ class Usuarios extends Controller
             if (empty($data['rfc']) || empty($data['nombre_usuario']) || empty($data['departamento_usuario']) || empty($data['dias_incapacidad']) || empty($data['tipo_incapacidad']) || empty($data['pago_general'])) {
                 $data['msg_error'] = 'Algunos campos estan vacios';
             }
-            if ($this->usuariosModel->editarNomina($data)) {
+            if ($this->usuariosModel->editarIncapacidad($data)) {
                 // El nombre sugerido sería actualizar usuario
                 // $this->view('usuarios/index/1/10');
                   header('Location:/usuarios/tablaIncapacidad/1/10');
@@ -171,7 +171,7 @@ class Usuarios extends Controller
             'pago_general' => $usuario->pago_general,
         ];
 
-        $this->view('usuarios/editarNominas', $data);
+        $this->view('usuarios/editarIncapacidades', $data);
         // echo 'fue get';
         }
     
@@ -237,9 +237,9 @@ class Usuarios extends Controller
         }
     }
 
-    public function eliminarIncapacidad($id)
+    public function eliminarIncapacidades($id)
     {
-        if (!$this->usuariosModel->eliminar($id)) {
+        if (!$this->usuariosModel->eliminarIncapacidad($id)) {
             echo 'No se pudo dar de baja';
             // esto es solo de prueba, hay que hacerlo mas elaborado
         } else {

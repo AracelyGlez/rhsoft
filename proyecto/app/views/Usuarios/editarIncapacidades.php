@@ -1,20 +1,25 @@
+
+<?php
+include APPROOT .'/views/includes/encabezado.inc.php';
+?>
+
+<?php if (estaLogueado()) {
+
+?>
 <?php  if (!empty($data['msg_error'])): ?>
     <div class="alert alert-danger">
         <?= htmlspecialchars($data['msg_error']); ?>
     </div>
 <?php endif; ?>
-<?php
-include APPROOT .'/views/includes/encabezado.inc.php';
-?>
- <!-- Título del formulario -->
- <div class="p-3 mb-3 text-center">
-
+        <!-- Título del formulario -->
+        <div class="p-3 mb-3 text-center">
+        
+       
             <h2 class="mb-0">Editar Incapacidades</h2>
         </div>
 
-        <!-- Comienza formulario -->
         <form
-          action="<?= URLROOT ?>/usuarios/<?= (isset($data['button']) && $data['button'] == 'Guardar') ? 'agregar' : 'editarIncapacidades'; ?>/<?= (isset($data['button']) && $data['button'] == 'Guardar') ? '' : $data['id']; ?>" 
+          action="<?= URLROOT; ?>/usuarios/<?= (isset($data['button']) && $data['button'] == 'Guardar') ? 'agregar' : 'editarIncapacidades'; ?>/<?= (isset($data['button']) && $data['button'] == 'Guardar') ? '' : $data['id']; ?>"
           method="post"
           id="datos_incapacidades"
            enctype="multipart/form-data"
@@ -26,23 +31,8 @@ include APPROOT .'/views/includes/encabezado.inc.php';
           <input type="hidden" name="id" value="<?= $data['id']; ?>">
         <?php } ?>
 
-          <!-- Primera fila -->
-          <div class="row mb-3" >
-            <div class="col" id="grupo-nombre_usuario">
-              <label for="nombre_nomina" class="form-label">Nombre</label>
-              <input
-                type="text"
-                class="form-control"
-                name="nombre_usuario"
-                id="nombre_usuario"
-                placeholder="Nombre"
-                 autocomplete="on"
-                value="<?= $data['nombre_usuario']; ?>"
-                pattern=".{3,60}"
-                
-              />
-            </div>
-            <div class="col" id="grupo-rfc_">
+          <div class="row mb-3">
+          <div class="col" id="grupo-rfc">
               <label for="rfc" class="form-label">RFC</label>
               <input
                 type="text"
@@ -51,93 +41,99 @@ include APPROOT .'/views/includes/encabezado.inc.php';
                 id="rfc"
                 placeholder="RFC"
                 value="<?= $data['rfc']; ?>"
-                
+                required
+              />
+            </div>
+            <div class="col" id="grupo-nombre_usuario">
+              <label for="nombre_usuario" class="form-label">Nombre</label>
+              <input
+                type="text"
+                class="form-control"
+                name="nombre_usuario"
+                id="nombre_usuario"
+                placeholder="Nombre"
+                value="<?= $data['nombre_usuario']; ?>"
+                required
               />
             </div>
           </div>
 
-          <!-- Segunda fila -->
-          <div class="row mb-3" >
+          <div class="row mb-3">
             <div class="col" id="grupo-departamento_usuario">
               <label for="departamento_usuario" class="form-label">Departamento</label>
               <select
                 class="form-select"
                 name="departamento_usuario"
-                id="departamento-usuario"
-                autocomplete="off"
+                id="departamento_usuario"
                 value="<?= $data['departamento_usuario']; ?>"
-                
+                required
               >
                 <option value="" disabled selected>
                   Seleccione un departamento
                 </option>
-                <option value="RR.HH">Recursos Humanos</option>
+                <option value="RRHH">Recursos Humanos</option>
                 <option value="Finanzas">Finanzas</option>
                 <option value="TI">Tecnologías de la Información</option>
               </select>
             </div>
             <div class="col" id="grupo-dias_incapacidad">
-              <label for="dias_incapacidad" class="form-label">D&iacute;as</label>
+              <label for="dias_incapacidad" class="form-label"
+                >Días Disponibles</label
+              >
               <input
                 type="number"
                 class="form-control"
                 name="dias_incapacidad"
                 id="dias_incapacidad"
-                placeholder="Dias de incapacidad"
-                autocomplete="off"
                 value="<?= $data['dias_incapacidad']; ?>"
-                
+                placeholder="Días"
+                required
               />
             </div>
           </div>
 
-          <!-- Tercera fila -->
           <div class="row mb-3">
+
           <div class="col" id="grupo-tipo_incapacidad">
-              <label for="tipo_incapacidad" class="form-label">Tipo de incapacidad</label>
+              <label for="tipo_incapacidad" class="form-label">Tipo</label>
               <select
                 class="form-select"
                 name="tipo_incapacidad"
                 id="tipo_incapacidad"
-                autocomplete="off"
                 value="<?= $data['tipo_incapacidad']; ?>"
-                
+                required
               >
                 <option value="" disabled selected>
-                  Seleccione su incapacidad
+                  Seleccione el tipo de incapacidad
                 </option>
-                <option value="Lesi&oacute;">Lesi&oacute;n</option>
-                <option value="Enfermedad/Infecci&oacute;n">Enfermedad o Infecci&oacute;n</option>
-                <option value="Reposo">Tiempo de Reposo</option>
+                <option value="lesi&oacute;n">Lesi&oacute;n</option>
+                <option value="enfermedad">Enfermedad o Infecci&oacute;n</option>
+                <option value="reposo">Tiempo de Reposo</option>
               </select>
             </div>
-            </div>
+
             <div class="col text-center" id="grupo-pago_general">
-              <label for="pago_general" class="form-label">Pago </label>
+              <label for="pago_general" class="form-label">Pago</label>
               <input
                 type="number"
                 class="form-control"
                 name="pago_general"
                 id="pago_general"
-                placeholder="Pago"
-                autocomplete="off"
                 value="<?= $data['pago_general']; ?>"
-                
+                placeholder="Monto"
+                required
               />
             </div>
           </div>
 
-          <!-- Cuarta fila -->
           <div class="row">
             <div class="col text-center">
               <button type="submit" class="btn btn-primary"><?= $data['button']; ?></button>
             </div>
           </div>
         </form>
-       
 
-
-         <script>
+        <script>
       (() => {
       'use strict'
     
@@ -157,8 +153,11 @@ include APPROOT .'/views/includes/encabezado.inc.php';
       })
     })()
     </script> 
-    
+     
         <?php
 include APPROOT .'/views/includes/pie.inc.php';
 ?>
-    
+<?php }
+else { ?>
+<h1>Inicia sesión primero</h1>
+<?php } ?>

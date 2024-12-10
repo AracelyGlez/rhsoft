@@ -39,7 +39,7 @@ include APPROOT .'/views/includes/encabezado.inc.php';
                     <td><?= $usuario->tipo_incapacidad; ?></td>
                     <td><?= $usuario->pago_general; ?></td>
                      <td><a href="<?= URLROOT; ?>/usuarios/editarIncapacidades/<?= $usuario->id; ?>" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i></a>
-                        <a href="<?= URLROOT; ?>/usuarios/eliminarIncapacidad/<?= $usuario->id; ?>" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>
+                        <a href="<?= URLROOT; ?>/usuarios/eliminarIncapacidades/<?= $usuario->id; ?>" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>
                     </td> 
                 </tr>
                 <!-- < ? php } ?> -->
